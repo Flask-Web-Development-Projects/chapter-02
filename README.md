@@ -85,3 +85,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-00](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-00) is the initial commit, with just the most basic file structure.
 - [checkpoint-01](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-01) is the start of the inclusion of a PostgreSQL database.
 - [checkpoint-02](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-02) adds the User model and `manage.py` for managing database migrations
+- [checkpoint-03](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-03) updates the user model so that the given password is hashed on instantiation and adds a route to register a new user
