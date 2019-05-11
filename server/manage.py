@@ -2,6 +2,7 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from forum import app, db
+from forum.users.models import User
 
 migrate = Migrate(app, db)
 
