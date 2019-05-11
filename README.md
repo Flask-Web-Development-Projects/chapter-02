@@ -46,6 +46,13 @@ Use `pip` to install the required packages for this project
 (ENV) $ pip install -r requirements.txt
 ```
 
+### Create a Postgres Database for the application
+
+```
+$ createuser -s postgres
+$ createdb forumdb
+```
+
 ### Set an Environment Variable for Running Flask
 
 Append to your `ENV/bin/activate` script an environment variable that points to the flask app.
@@ -76,3 +83,4 @@ If you want to see this project built step by step, follow the branches of the r
 
 - [master](https://github.com/Flask-Web-Development-Projects/chapter-02/) will include the finished product.
 - [checkpoint-00](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-00) is the initial commit, with just the most basic file structure.
+- [checkpoint-01](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-01) is the start of the inclusion of a PostgreSQL database.
