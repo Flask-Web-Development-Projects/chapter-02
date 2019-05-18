@@ -1,5 +1,6 @@
 from flask import Response
 from flask_httpauth import HTTPTokenAuth
+
 from forum.users.models import User, get_user
 
 auth = HTTPTokenAuth(scheme="Token")
