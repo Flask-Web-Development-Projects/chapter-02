@@ -1,9 +1,9 @@
 from setuptools import setup
 
 required = [
+    "flask-api==1.1",
     "flask-httpauth==3.2.4"
     "flask-migrate==2.4.0",
-    "flask-restplus==0.12.1",
     "flask-script==2.0.6",
     "flask-sqlalchemy==2.4.0",
     "passlib==1.7.1",
