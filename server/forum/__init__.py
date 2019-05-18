@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+from forum.constants import API_PREFIX
 from forum.users.routes import user_routes
 
-API_PREFIX = '/api/v1'
 app.register_blueprint(user_routes, url_prefix=API_PREFIX)
