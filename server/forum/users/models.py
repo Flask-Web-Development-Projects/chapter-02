@@ -1,10 +1,10 @@
 import datetime
-from typing import Optional
-
 from passlib.hash import pbkdf2_sha256 as hasher
 from sqlalchemy import Column, DateTime, Integer, Text, Unicode
+from typing import Optional
 
 from forum import db
+from forum.constants import TIME_FMT
 
 class User(db.Model):
     """Model for the User object.
@@ -42,6 +42,23 @@ class User(db.Model):
         kwargs["password"] = hasher.hash(kwargs["password"])
         kwargs["token"] = hasher.hash(kwargs["username"])
         super().__init__(self, *args, **kwargs)
+
+    def to_json(self) -> dict:
+        """Returns the user's fields in a JSON serializable format.
+        
+        Returns
+        -------
+        dict
+            The user's ID as integer, username as string, creation_date and
+            last_updated as formatted datetime string, and bio as string.
+        """
+        return {
+            'id': self.id,
+            'username': self.username,
+            'creation_date': self.creation_date.strftime(TIME_FMT),
+            'last_updated': self.last_updated.strftime(TIME_FMT),
+            'bio': self.bio
+        }
 
 
 def get_user(username: str) -> Optional[User]:
