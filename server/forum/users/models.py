@@ -1,5 +1,6 @@
 import datetime
 from passlib.hash import pbkdf2_sha256 as hasher
+import secrets
 from sqlalchemy import Column, DateTime, Integer, Text, Unicode
 from typing import Optional
 
@@ -40,8 +41,8 @@ class User(db.Model):
     def __init__(self, *args, **kwargs) -> None:
         """Overrides the inherited init method to hash incoming passwords."""
         kwargs["password"] = hasher.hash(kwargs["password"])
-        kwargs["token"] = hasher.hash(kwargs["username"])
-        super().__init__(self, *args, **kwargs)
+        kwargs["token"] = secrets.token_urlsafe(64)
+        super().__init__(*args, **kwargs)
 
     def to_json(self) -> dict:
         """Returns the user's fields in a JSON serializable format.
