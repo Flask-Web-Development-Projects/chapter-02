@@ -24,4 +24,6 @@ def authenticate(response: Response, username: str) -> bool:
     Response
         The full response object, now with a cookie
     """
-    pass
+    token = hasher.hash(username)
+    response.set_cookie('auth_token', value=token)
+    return response
