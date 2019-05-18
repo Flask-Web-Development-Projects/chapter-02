@@ -1,6 +1,9 @@
-from flask import Blueprint, Response
+from flask import jsonify, Blueprint, Response, request
+from flask_api import status
 
+from forum import db
 from forum.auth import authenticate
+from forum.users.models import get_user, User
 
 user_routes = Blueprint('user_routes', __name__)
 
@@ -21,9 +24,33 @@ def register_user() -> Response:
         on a successful user registration. On a failed one, contains the 
         right status as well as the reason for failure.
     """
-    response = Response(
-        response = 'You made it!',
-        mimetype = 'application/json'
-    )
+    needed = ['username', 'password', 'password2']
+    if all([key in request.data for key in needed]):
+        user = get_user(request.data['username'])
+        
+        if user:
+            response = jsonify({'error': 'User already exists'})
+            response.status_code = status.HTTP_409_CONFLICT
+            return response
+
+        if request.data['password'] != request.data['password2']:
+            response = jsonify({'error': "Passwords don't match"})
+            response.status_code = status.HTTP_417_EXPECTATION_FAILED
+            return response
+        
+        new_user = User(
+            username=request.data['username'],
+            password=request.data['password']
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        response = jsonify(new_user.to_json())
+        response.status_code = status.HTTP_201_CREATED
+        return authenticate(response, user=new_user)
+    
+    response = jsonify({'error': 'Some fields are missing'})
+    response.status_code = status.HTTP_400_BAD_REQUEST
     return response
     
