@@ -33,6 +33,7 @@ def authenticate(response: Response, user: User) -> Response:
 @auth.verify_token
 def verify_token(token: str) -> bool:
     """Verify that the incoming request has the expected token."""
+    import pdb; pdb.set_trace()
     if token:
         username = token.split(':')
         user = get_user(username)

@@ -1,9 +1,11 @@
+import datetime
+
 from flask import jsonify, Blueprint, Response, request
 from flask_api import status
 from passlib.hash import pbkdf2_sha256 as hasher
 
 from forum import db
-from forum.auth import authenticate
+from forum.auth import auth, authenticate
 from forum.users.models import get_user, User
 
 user_routes = Blueprint('user_routes', __name__)
@@ -82,4 +84,65 @@ def login() -> Response:
     response = jsonify({'error': 'Some fields are missing'})
     response.status_code = status.HTTP_400_BAD_REQUEST
     return response
+
+def verify_user(username: str) -> bool:
+    """Verify that the user making the request is the right user.
     
+    Parameters
+    ----------
+    username : str
+        The username of the account trying to be accessed.
+    
+    Returns
+    -------
+    bool
+        True if the authorized user is the same as the account trying
+        to be accessed, False otherwise.
+    """
+    token = request.cookies['auth_token']
+    auth_user = token.split(':')[0]
+    return username == auth_user
+
+@user_routes.route('/users/<string:username>', methods=["PUT"])
+@auth.login_required
+def update_account(username: str) -> Response:
+    """Update the user's account with new information.
+    
+    Submit new information to be added to the user account, outside of
+    password and token.
+
+    Parameters
+    ----------
+    username : str
+        The username for the user's account
+    
+    Returns
+    -------
+    Response
+        The response body will contain the updated user information as it
+        exists within the database
+    """
+    user = get_user(username)
+    if not user:
+        response = jsonify({'error': 'This user does not exist.'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    import pdb; pdb.set_trace()
+    if not verify_user(username):
+        response = jsonify({
+            'error': 'User is not authorized to make this request'
+        })
+        repsonse.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+    
+    user.username = request.data.get('username', user.username)
+    user.bio = request.data.get('bio', user.bio)
+    user.last_updated = datetime.datetime.utcnow()
+
+    db.session.add(user)
+    db.session.commit()
+
+    response = jsonify(user.to_json())
+    response.status_code = status.HTTP_200_OK
+    return response
