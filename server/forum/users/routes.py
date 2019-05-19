@@ -1,5 +1,6 @@
 from flask import jsonify, Blueprint, Response, request
 from flask_api import status
+from passlib.hash import pbkdf2_sha256 as hasher
 
 from forum import db
 from forum.auth import authenticate
@@ -50,6 +51,34 @@ def register_user() -> Response:
         response.status_code = status.HTTP_201_CREATED
         return authenticate(response, user=new_user)
     
+    response = jsonify({'error': 'Some fields are missing'})
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return response
+    
+@user_routes.route('/users/login', methods=["POST"])
+def login() -> Response:
+    """Authenticate the user with successful credentials.
+    
+    Returns
+    -------
+    Response
+        If the user credentials match, return an authenticated response
+        containing the user's token.
+    """
+    needed = ['username', 'password']
+    if all([key in request.data for key in needed]):
+        user = get_user(request.data['username'])
+        if not user or not hasher.verify(request.data['password'], user.password):
+            response = jsonify({
+                'error': 'The username/password combination is invalid.'
+            })
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            return response
+        
+        response = jsonify(user.to_json())
+        response.status_code = status.HTTP_200_OK
+        return authenticate(response, user=user)
+
     response = jsonify({'error': 'Some fields are missing'})
     response.status_code = status.HTTP_400_BAD_REQUEST
     return response
