@@ -128,7 +128,6 @@ def update_account(username: str) -> Response:
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
 
-    import pdb; pdb.set_trace()
     if not verify_user(username):
         response = jsonify({
             'error': 'User is not authorized to make this request'
@@ -145,4 +144,4 @@ def update_account(username: str) -> Response:
 
     response = jsonify(user.to_json())
     response.status_code = status.HTTP_200_OK
-    return response
+    return authenticate(response, user)

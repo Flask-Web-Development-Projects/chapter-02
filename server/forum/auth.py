@@ -1,9 +1,10 @@
-from flask import Response
+from flask import Response, request
 from flask_httpauth import HTTPTokenAuth
 
 from forum.users.models import User, get_user
+from forum import app
 
-auth = HTTPTokenAuth(scheme="Token")
+auth = HTTPTokenAuth("Bearer")
 
 def authenticate(response: Response, user: User) -> Response:
     """Authenticate an outgoing response with the user's token.
@@ -33,9 +34,8 @@ def authenticate(response: Response, user: User) -> Response:
 @auth.verify_token
 def verify_token(token: str) -> bool:
     """Verify that the incoming request has the expected token."""
-    import pdb; pdb.set_trace()
     if token:
-        username = token.split(':')
+        username, user_token = token.split(':')
         user = get_user(username)
-        return token == user.token
+        return user_token == user.token
     return False
