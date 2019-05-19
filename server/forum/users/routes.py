@@ -30,12 +30,12 @@ def register_user() -> Response:
         
         if user:
             response = jsonify({'error': 'User already exists'})
-            response.status_code = status.HTTP_409_CONFLICT
+            response.status_code = status.HTTP_400_BAD_REQUEST
             return response
 
         if request.data['password'] != request.data['password2']:
             response = jsonify({'error': "Passwords don't match"})
-            response.status_code = status.HTTP_417_EXPECTATION_FAILED
+            response.status_code = status.HTTP_400_BAD_REQUEST
             return response
         
         new_user = User(
