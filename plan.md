@@ -1,14 +1,23 @@
 # Plan for User Interactions
 
 As a user, I...
-- should be able to see the homepage whether I'm logged in or not.
+- should be able to see the homepage whether I'm logged in or not
 - should be able to register for a new account on the website
 - should be able to login with an existing account if I have one
-- should be notified if my login credentials are incorrect
-- should be able to delete my account at any time
+  - if the username supplied doesn't match an existing account, return a 404
+  - if the password supplied doesn't match the password for the account, return a 400
+  - if the username and password match, return a 200 and the user object with token
+- should be able to delete my own account at any time
+  - whether the account exists or not, the response should be a 200
+  - if the account of the authenticated user doesn't match the account being deleted, a 401 is returned
 - should be able to change my password
-- should be able to see my account details
-- shouldn't be able to see anyone else's account details
+  - if the new password doesn't match the verify password, 400
+  - if the old password doesn't match existing password, 400
+  - if the new password matches existing password, 400
+  - if the user trying to change passwords isn't the authenticated user, 401
+  - if good password change, 200
+- should be able to see my account details and posts
+- shouldn't be able to see anyone else's account details, only their posts
 - should be able to see how long ago I created my account
 - should be able to see the last few posts I made
 - should be able to see the most recent N posts, where I can choose what N is
