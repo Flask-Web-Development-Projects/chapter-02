@@ -35,7 +35,7 @@ def create_post() -> Response:
 
         response = jsonify(new_post.to_json)
         response.status_code = status.HTTP_201_CREATED
-        return 
+        return response
 
     response = jsonify({'error': 'Some fields are missing'})
     response.status_code = status.HTTP_400_BAD_REQUEST
