@@ -81,5 +81,5 @@ class Post(db.Model):
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
             'views': self.views,
-            # 'liked_by': self.liked_by
+            'liked_by': self.liked_by
         }
