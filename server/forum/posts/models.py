@@ -7,10 +7,10 @@ from sqlalchemy.orm import relationship, backref
 from forum import db
 from forum.constants import TIME_FMT
 
-# posts = Table('posts',
-#     Column('post_id', Integer, ForeignKey('post.id'), primary_key=True),
-#     Column('user_id', Integer, ForeignKey('user.id'), primary_key=True)
-# )
+posts = db.Table('posts',
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+)
 
 class Post(db.Model):
     """Model for the Post object.
@@ -55,12 +55,12 @@ class Post(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(Text, nullable=False)
     body = Column(Text, nullable=False)
-    author_id = Column(Integer, ForeignKey('User.id'), nullable=False)
+    author_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     creation_date = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow)
     views = Column(Integer, default=0)
-    # liked_by = relationship('User', secondary=posts, lazy='subquery',
-        # backref=backref('liked', lazy=True))
+    liked_by = relationship('User', secondary=posts, lazy='subquery',
+        backref=backref('liked', lazy=True))
     
     def to_json(self) -> dict:
         """Returns the post's fields in a JSON serializable format.
