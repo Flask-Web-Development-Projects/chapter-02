@@ -163,4 +163,22 @@ def delete_account(username: str) -> Response:
         the Response will have a status of 401 Unauthorized. Otherwise,
         the Response will be an unauthenticated 204 No Content.
     """
-    pass
+    user = get_user(username)
+    if not user:
+        response = jsonify({'error': 'This user does not exist.'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    if not verify_user(username):
+        response = jsonify({
+            'error': 'User is not authorized to make this request'
+        })
+        repsonse.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+    
+    db.session.delete(user)
+    db.session.commit()
+
+    response = Response()
+    response.status_code = status.HTTP_204_NO_CONTENT
+    return response
