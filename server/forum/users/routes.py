@@ -205,3 +205,18 @@ def delete_account(username: str) -> Response:
     response.status_code = status.HTTP_204_NO_CONTENT
     return response
 
+@user_routes.route('/users/<username:string>', methods=["GET"])
+def get_account(username: str) -> Response:
+    """Retrieve details for a given user account.
+    
+    Parameters
+    ----------
+    username : str
+        The username of the requested account
+
+    Returns
+    -------
+    Response
+        The details of the user account in JSON format.
+    """
+    pass

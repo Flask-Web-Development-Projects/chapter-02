@@ -16,7 +16,6 @@ As a user, I...
   - if the user trying to change passwords isn't the authenticated user, 401
   - if good password change, 200
 - should be able to see my account details and posts
-- shouldn't be able to see anyone else's account details, only their posts
 - should be able to see how long ago I created my account
 - should be able to see the last few posts I made
 - should be able to see the most recent N posts, where I can choose what N is
