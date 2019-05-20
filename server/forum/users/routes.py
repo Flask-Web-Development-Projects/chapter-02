@@ -149,7 +149,7 @@ def update_account(username: str) -> Response:
         if verify_pass and passwords_match:
             user.password = hasher.hash(new_pass)
         
-        else if not verify_pass:
+        elif not verify_pass:
             response = jsonify({'error': "Old password is invalid"})
             response.status_code = status.HTTP_403_FORBIDDEN
             return response
