@@ -1,7 +1,8 @@
 import datetime
 from passlib.hash import pbkdf2_sha256 as hasher
 import secrets
-from sqlalchemy import Column, DateTime, Integer, Text, Unicode, relationship
+from sqlalchemy import Column, DateTime, Integer, Text, Unicode
+from sqlalchemy.orm import relationship
 from typing import Optional
 
 from forum import db

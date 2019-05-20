@@ -1,8 +1,8 @@
 import datetime
 from sqlalchemy import (
-    Column, DateTime, Integer, Text, Unicode, ForeignKey,
-    Table, backref
+    Column, DateTime, Integer, Text, Unicode, ForeignKey, Table
 )
+from sqlalchemy.orm import relationship, backref
 
 from forum import db
 from forum.constants import TIME_FMT
