@@ -1,8 +1,4 @@
 import datetime
-from sqlalchemy import (
-    Column, DateTime, Integer, Text, Unicode, ForeignKey, Table
-)
-from sqlalchemy.orm import relationship, backref
 
 from forum import db
 from forum.constants import TIME_FMT
@@ -52,15 +48,15 @@ class Post(db.Model):
     to_json()
         Returns the post's fields in a JSON serializable format
     """
-    id = Column(Integer, primary_key=True)
-    title = Column(Text, nullable=False)
-    body = Column(Text, nullable=False)
-    author_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    creation_date = Column(DateTime, default=datetime.datetime.utcnow)
-    last_updated = Column(DateTime, default=datetime.datetime.utcnow)
-    views = Column(Integer, default=0)
-    liked_by = relationship('User', secondary=posts, lazy='subquery',
-        backref=backref('liked', lazy=True))
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    views = db.Column(db.Integer, default=0)
+    liked_by = db.relationship('User', secondary=posts, lazy='subquery',
+        backref=db.backref('liked', lazy=True))
     
     def to_json(self) -> dict:
         """Returns the post's fields in a JSON serializable format.
