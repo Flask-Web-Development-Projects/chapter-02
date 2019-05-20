@@ -145,3 +145,22 @@ def update_account(username: str) -> Response:
     response = jsonify(user.to_json())
     response.status_code = status.HTTP_200_OK
     return authenticate(response, user)
+
+@user_routes.route('/users/<string:username>', methods=["DELETE"])
+@auth.login_required
+def delete_account(username: str) -> Response:
+    """Deletes a user account given the corresponding username.
+    
+    Parameters
+    ----------
+    username : str
+        The username corresponding to the account to be deleted
+
+    Returns
+    -------
+    Response
+        If the user trying to delete an account is not the account owner,
+        the Response will have a status of 401 Unauthorized. Otherwise,
+        the Response will be an unauthenticated 204 No Content.
+    """
+    pass
