@@ -91,3 +91,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-06](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-06) allows the user to have its account deleted
 - [checkpoint-07](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-07) allows the user to change their password
 - [checkpoint-08](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-08) retrieves the details for a given user account
+- [checkpoint-09](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-09) establishes the Post object
