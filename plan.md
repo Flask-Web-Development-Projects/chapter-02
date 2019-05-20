@@ -8,7 +8,6 @@ As a user, I...
   - if the password supplied doesn't match the password for the account, return a 400
   - if the username and password match, return a 200 and the user object with token
 - should be able to delete my own account at any time
-  - whether the account exists or not, the response should be a 200
   - if the account of the authenticated user doesn't match the account being deleted, a 401 is returned
 - should be able to change my password
   - if the new password doesn't match the verify password, 400

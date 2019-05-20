@@ -89,3 +89,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-04](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-04) updates the user routes to include the login route
 - [checkpoint-05](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-05) updates the user routes to include the account update route
 - [checkpoint-06](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-06) allows the user to have its account deleted
+- [checkpoint-07](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-07) allows the user to change their password
