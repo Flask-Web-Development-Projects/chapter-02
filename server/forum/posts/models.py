@@ -7,10 +7,10 @@ from sqlalchemy.orm import relationship, backref
 from forum import db
 from forum.constants import TIME_FMT
 
-posts = Table('posts',
-    Column('post_id', Integer, ForeignKey('post.id'), primary_key=True),
-    Column('user_id', Integer, ForeignKey('user.id'), primary_key=True)
-)
+# posts = Table('posts',
+#     Column('post_id', Integer, ForeignKey('post.id'), primary_key=True),
+#     Column('user_id', Integer, ForeignKey('user.id'), primary_key=True)
+# )
 
 class Post(db.Model):
     """Model for the Post object.
@@ -56,11 +56,11 @@ class Post(db.Model):
     title = Column(Text, nullable=False)
     body = Column(Text, nullable=False)
     author_id = Column(Integer, ForeignKey('User.id'), nullable=False)
-    creation_date = Column(DateTime, datetime.datetime.utcnow)
-    last_updated = Column(DateTime, datetime.datetime.utcnow)
+    creation_date = Column(DateTime, default=datetime.datetime.utcnow)
+    last_updated = Column(DateTime, default=datetime.datetime.utcnow)
     views = Column(Integer, default=0)
-    liked_by = relationship('User', secondary=posts, lazy='subquery',
-        backref=backref('liked', lazy=True))
+    # liked_by = relationship('User', secondary=posts, lazy='subquery',
+        # backref=backref('liked', lazy=True))
     
     def to_json(self) -> dict:
         """Returns the post's fields in a JSON serializable format.
@@ -81,5 +81,5 @@ class Post(db.Model):
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
             'views': self.views,
-            'liked_by': self.liked_by
+            # 'liked_by': self.liked_by
         }
