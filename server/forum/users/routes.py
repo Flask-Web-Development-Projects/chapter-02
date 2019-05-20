@@ -108,8 +108,8 @@ def verify_user(username: str) -> bool:
 def update_account(username: str) -> Response:
     """Update the user's account with new information.
     
-    Submit new information to be added to the user account, outside of
-    password and token.
+    Submit new information to be added to the user account. Can be used to
+    update the user's password as well.
 
     Parameters
     ----------
@@ -137,6 +137,28 @@ def update_account(username: str) -> Response:
     
     user.username = request.data.get('username', user.username)
     user.bio = request.data.get('bio', user.bio)
+
+    if "new_password" in request.data:
+        old_pass = request.data["password"]
+        new_pass = request.data["new_password"]
+        new_pass_match = request.data["new_password2"]
+
+        verify_pass = hasher.verify(old_pass, user.password)
+        passwords_match = new_pass == new_pass_match
+
+        if verify_pass and passwords_match:
+            user.password = hasher.hash(new_pass)
+        
+        else if not verify_pass:
+            response = jsonify({'error': "Old password is invalid"})
+            response.status_code = status.HTTP_403_FORBIDDEN
+            return response
+        
+        else:
+            response = jsonify({'error': "New password isn't matched"})
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            return response
+
     user.last_updated = datetime.datetime.utcnow()
 
     db.session.add(user)
@@ -182,3 +204,4 @@ def delete_account(username: str) -> Response:
     response = Response()
     response.status_code = status.HTTP_204_NO_CONTENT
     return response
+
