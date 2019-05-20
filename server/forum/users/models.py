@@ -1,7 +1,7 @@
 import datetime
 from passlib.hash import pbkdf2_sha256 as hasher
 import secrets
-from sqlalchemy import Column, DateTime, Integer, Text, Unicode
+from sqlalchemy import Column, DateTime, Integer, Text, Unicode, relationship
 from typing import Optional
 
 from forum import db
@@ -29,6 +29,9 @@ class User(db.Model):
 
     bio : string
         The user's own description of themselves
+    
+    posts : list
+        The list of posts this user has created
 
     Methods
     -------
@@ -42,6 +45,7 @@ class User(db.Model):
     last_updated = Column(DateTime, default=datetime.datetime.utcnow)
     bio = Column(Text)
     token = Column(Unicode)
+    posts = relationship('Post', backref='author', lazy=True)
 
     def __init__(self, *args, **kwargs) -> None:
         """Overrides the inherited init method to hash incoming passwords."""
