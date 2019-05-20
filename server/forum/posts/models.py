@@ -4,8 +4,14 @@ from forum import db
 from forum.constants import TIME_FMT
 
 posts = db.Table('posts',
-    db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    db.Column(
+        'post_id', db.Integer,
+        db.ForeignKey('post.id'), primary_key=True
+    ),
+    db.Column(
+        'user_id', db.Integer,
+        db.ForeignKey('user.id'), primary_key=True
+    )
 )
 
 class Post(db.Model):
@@ -51,7 +57,10 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     body = db.Column(db.Text, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id'), nullable=False
+    )
     creation_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     last_updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     views = db.Column(db.Integer, default=0)
