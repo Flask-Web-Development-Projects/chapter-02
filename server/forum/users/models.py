@@ -1,8 +1,6 @@
 import datetime
 from passlib.hash import pbkdf2_sha256 as hasher
 import secrets
-from sqlalchemy import Column, DateTime, Integer, Text, Unicode
-from sqlalchemy.orm import relationship
 from typing import Optional
 
 from forum import db
@@ -39,14 +37,14 @@ class User(db.Model):
     to_json()
         Returns the user's fields in a JSON serializable format
     """
-    id = Column(Integer, primary_key=True)
-    username = Column(Unicode, nullable=False)
-    password = Column(Unicode, nullable=False)
-    creation_date = Column(DateTime, default=datetime.datetime.utcnow)
-    last_updated = Column(DateTime, default=datetime.datetime.utcnow)
-    bio = Column(Text)
-    token = Column(Unicode)
-    posts = relationship('Post', backref='author', lazy=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.Unicode, nullable=False)
+    password = db.Column(db.Unicode, nullable=False)
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    bio = db.Column(db.Text)
+    token = db.Column(db.Unicode)
+    posts = db.relationship('Post', backref='author', lazy=True)
 
     def __init__(self, *args, **kwargs) -> None:
         """Overrides the inherited init method to hash incoming passwords."""
