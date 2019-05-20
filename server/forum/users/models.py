@@ -29,6 +29,11 @@ class User(db.Model):
 
     bio : string
         The user's own description of themselves
+
+    Methods
+    -------
+    to_json()
+        Returns the user's fields in a JSON serializable format
     """
     id = Column(Integer, primary_key=True)
     username = Column(Unicode, nullable=False)
