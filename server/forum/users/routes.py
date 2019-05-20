@@ -219,4 +219,10 @@ def get_account(username: str) -> Response:
     Response
         The details of the user account in JSON format.
     """
-    pass
+    user = get_user(username)
+    if not user:
+        response = jsonify({'error': 'This user does not exist.'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    return jsonify(user.to_json())
