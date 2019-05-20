@@ -205,7 +205,7 @@ def delete_account(username: str) -> Response:
     response.status_code = status.HTTP_204_NO_CONTENT
     return response
 
-@user_routes.route('/users/<username:string>', methods=["GET"])
+@user_routes.route('/users/<string:username>', methods=["GET"])
 def get_account(username: str) -> Response:
     """Retrieve details for a given user account.
     
