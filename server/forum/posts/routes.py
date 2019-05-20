@@ -20,4 +20,23 @@ def create_post() -> Response:
     Response
         Contains the full information for the newly-created post
     """
-    pass
+    needed = ["title", "body"]
+    if all([key in request.data for key in needed]):
+        username = request.headers['Authorization'].split(':')[0].replace('Bearer ', '')
+        user = get_user(username)
+        new_post = Post(
+            title=request.data["title"],
+            body=request.data["body"],
+            author_id=user.id
+        )
+
+        db.session.add(new_post)
+        db.session.commit()
+
+        response = jsonify(new_post.to_json)
+        response.status_code = status.HTTP_201_CREATED
+        return 
+
+    response = jsonify({'error': 'Some fields are missing'})
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return response

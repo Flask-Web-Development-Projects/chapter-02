@@ -82,9 +82,9 @@ class Post(db.Model):
             'id': self.id,
             'title': self.title,
             'body': self.body,
-            'author': self.author,
+            'author': self.author.username,
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
             'views': self.views,
-            'liked_by': self.liked_by
+            'liked_by': [user.username for user in self.liked_by]
         }
