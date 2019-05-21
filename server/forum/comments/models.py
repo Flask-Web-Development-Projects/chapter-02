@@ -39,13 +39,13 @@ class Comment(db.Model):
     body = db.Column(db.Text, nullable=False)
     author_id = db.Column(
         db.Integer,
-        db.ForeignKey('user.id'), nullable=False
+        db.ForeignKey('user.id')
     )
     creation_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     last_updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     post_id = db.Column(
         db.Integer,
-        db.ForeignKey('post.id')
+        db.ForeignKey('post.id'), nullable=False
     )
 
     def to_json(self) -> dict:
