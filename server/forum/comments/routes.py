@@ -77,9 +77,32 @@ def delete_comment(post_id: int, comment_id: int) -> Response:
     Returns
     -------
     Response
-        An empty, 204 No Content response
+        Just the 204 No Content repsonse on successful deletion.
+        Otherwise, 404 not found or 401 Unauthorized.
     """
-    pass
+    comment = Comment.query.get(comment_id)
+    if not comment:
+        response = jsonify({'error': 'This comment does not exist'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    
+    user = get_user_from_request()
+    if not user:
+        response = jsonify({'error': 'Authorized user not found'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    if user != comment.author:
+        response = jsonify({'error': "User is not the author of this comment"})
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+ 
+    db.session.delete(comment)
+    db.session.commit()
+
+    response = Response()
+    response.status_code = status.HTTP_204_NO_CONTENT
+    return response
 
 @comment_routes.route('/posts/<int:post_id>/comments/<int:comment_id>', methods=["PUT"])
 @auth.login_required
@@ -101,4 +124,28 @@ def update_comment(post_id: int, comment_id: int) -> Response:
     Response
         The updated comment information
     """
-    pass
+    comment = Comment.query.get(comment_id)
+    if not comment:
+        response = jsonify({'error': 'This comment does not exist'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    
+    user = get_user_from_request()
+    if not user:
+        response = jsonify({'error': 'Authorized user not found'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    if user != comment.author:
+        response = jsonify({'error': "User is not the author of this comment"})
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+    
+    comment.body = request.data.get('body', comment.body)
+
+    db.session.add(comment)
+    db.session.commit()
+
+    response = jsonify(comment.to_json)
+    response.status_code = status.HTTP_200_OK
+    return response

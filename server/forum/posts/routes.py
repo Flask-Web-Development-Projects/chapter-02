@@ -146,7 +146,7 @@ def update_post(post_id: int) -> Response:
     Response
         The response contains the updated post content
     """
-    post = Post.query.get(post_Id)
+    post = Post.query.get(post_id)
     if not post:
         response = jsonify({'error': 'This post does not exist'})
         response.status_code = status.HTTP_404_NOT_FOUND
