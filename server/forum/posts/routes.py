@@ -22,7 +22,8 @@ def create_post() -> Response:
     """
     needed = ["title", "body"]
     if all([key in request.data for key in needed]):
-        username = request.headers['Authorization'].split(':')[0].replace('Bearer ', '')
+        raw_token = request.headers['Authorization']
+        username = raw_token.split(':')[0].replace('Bearer ', '')
         user = get_user(username)
         new_post = Post(
             title=request.data["title"],
@@ -75,4 +76,39 @@ def get_post(post_id: int) -> Response:
     
     response = jsonify(post.to_json())
     response.status_code = status.HTTP_200_OK
+    return response
+
+@post_routes.route('/posts/<int:post_id>', methods=["DELETE"])
+@auth.login_required
+def delete_post(post_id: int) -> Response:
+    """Delete a post by ID.
+
+    If the post exists and the user is the creator of the post, delete the
+    post. Otherwise, pass back errors.
+
+    Returns
+    -------
+    Response
+        Just the 204 No Content repsonse on successful deletion.
+        Otherwise, 404 not found or 401 Unauthorized.
+    """
+    post = Post.query.get(post_id)
+    if not post:
+        response = jsonify({'error': 'This post does not exist'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    
+    raw_token = request.headers['Authorization']
+    username = raw_token.split(':')[0].replace('Bearer ', '')
+    user = get_user(username)
+    if user != post.author:
+        response = jsonify({'error': "User is not the author of this post"})
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+    
+    db.session.delete(post)
+    db.session.commit()
+
+    response = Response()
+    response.status_code = status.HTTP_204_NO_CONTENT
     return response

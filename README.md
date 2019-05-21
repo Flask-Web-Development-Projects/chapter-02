@@ -94,3 +94,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-09](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-09) establishes the Post object and switches the User model to using the db object instead of pulling from SQLAlchemy directly
 - [checkpoint-10](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-10) creates the Post creation endpoint
 - [checkpoint-11](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-11) creates the post listing endpoint as well as allows the user to get individual posts by ID
+- [checkpoint-12](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-11) creates the post editing and deletion endpoints
