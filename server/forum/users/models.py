@@ -1,7 +1,9 @@
 import datetime
-from passlib.hash import pbkdf2_sha256 as hasher
 import secrets
 from typing import Optional
+
+from flask import request
+from passlib.hash import pbkdf2_sha256 as hasher
 
 from forum import db
 from forum.constants import TIME_FMT
@@ -89,3 +91,20 @@ def get_user(username: str) -> Optional[User]:
         Otherwise, None is returned.
     """
     return User.query.filter_by(username=username).first()
+
+
+def get_user_from_request() -> Optional[User]:
+    """Return the user from the request object.
+    
+    Parse the token on the request Authorization header and 
+    return the user.
+    
+    Returns
+    -------
+    User
+        Returns the user object if the user exists, otherwise none.
+    """
+    raw_token = request.headers['Authorization']
+    username = raw_token.split(':')[0].replace('Bearer ', '')
+    return get_user(username)
+
