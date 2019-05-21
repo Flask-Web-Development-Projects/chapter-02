@@ -29,7 +29,35 @@ def create_comment(post_id: int) -> Response:
     Response
         Contains the full information for the newly-created comment
     """
-    pass
+    if not request.data.get('body', None):
+        response = jsonify({'error': 'Empty comments are invalid'})
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return response
+
+    user = get_user_from_request()
+    if not user:
+        response = jsonify({'error': 'Authorized user not found'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    post = Post.query.get(post_id)
+    if not post:
+        response = jsonify({'error': 'This post does not exist'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    
+    new_comment = Comment(
+        body=request.data['body'],
+        author_id=user.id,
+        post_id=post.id
+    )
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    response = jsonify(new_comment.to_json)
+    response.status_code = status.HTTP_201_CREATED
+    return response
 
 @comment_routes.route('/posts/<int:post_id>/comments/<int:comment_id>', methods=["DELETE"])
 @auth.login_required
