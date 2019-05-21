@@ -68,7 +68,8 @@ class User(db.Model):
             'username': self.username,
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
-            'bio': self.bio
+            'bio': self.bio,
+            'posts': [post.to_json() for post in self.posts]
         }
 
 
