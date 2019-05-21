@@ -1,9 +1,11 @@
+import datetime
+
 from flask import jsonify, Blueprint, Response, request
 from flask_api import status
 
 from forum import db
 from forum.auth import auth, authenticate
-from forum.users.models import get_user, User
+from forum.users.models import get_user, get_user_from_request, User
 from forum.posts.models import Post
 
 post_routes = Blueprint('post_routes', __name__)
@@ -22,9 +24,12 @@ def create_post() -> Response:
     """
     needed = ["title", "body"]
     if all([key in request.data for key in needed]):
-        raw_token = request.headers['Authorization']
-        username = raw_token.split(':')[0].replace('Bearer ', '')
-        user = get_user(username)
+        user = get_user_from_request()
+        if not user:
+            response = jsonify({'error': 'Authorized user not found'})
+            response.status_code = status.HTTP_404_NOT_FOUND
+            return response
+
         new_post = Post(
             title=request.data["title"],
             body=request.data["body"],
@@ -103,9 +108,12 @@ def delete_post(post_id: int) -> Response:
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
     
-    raw_token = request.headers['Authorization']
-    username = raw_token.split(':')[0].replace('Bearer ', '')
-    user = get_user(username)
+    user = get_user_from_request()
+    if not user:
+        response = jsonify({'error': 'Authorized user not found'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
     if user != post.author:
         response = jsonify({'error': "User is not the author of this post"})
         response.status_code = status.HTTP_401_UNAUTHORIZED
@@ -138,4 +146,30 @@ def update_post(post_id: int) -> Response:
     Response
         The response contains the updated post content
     """
-    pass
+    post = Post.query.get(post_Id)
+    if not post:
+        response = jsonify({'error': 'This post does not exist'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    user = get_user_from_request()
+    if not user:
+        response = jsonify({'error': 'Authorized user not found'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    post.views += 1
+    if user not in post.liked_by:
+        post.liked_by.append(user)
+    
+    if user == post.author:
+        post.title = request.data.get("title", post.title)
+        post.body = request.data.get("body", post.body)
+        post.last_updated = datetime.datetime.utcnow()
+
+    db.session.add(post)
+    db.session.commit()
+
+    response = jsonify(post.to_json())
+    response.status_code = status.HTTP_200_OK
+    return response
