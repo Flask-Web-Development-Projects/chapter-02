@@ -25,8 +25,5 @@ As a user, I...
 - should be able to edit or delete any of my posts
 - shouldn't be able to edit or delete anyone else's post
 - should be able to leave a comment on any post
-- should be able to reply to a comment with a comment
 - should be able to edit or delete any of my comments
-- should be able to "like" a comment or a post
-- should be able to "unlike" a comment or post that I have previously liked
 - should still have my posts and comments in existence even if I delete my account

@@ -154,7 +154,7 @@ def update_account(username: str) -> Response:
             response.status_code = status.HTTP_403_FORBIDDEN
             return response
         
-        else:
+        elif:
             response = jsonify({'error': "New password isn't matched"})
             response.status_code = status.HTTP_400_BAD_REQUEST
             return response
