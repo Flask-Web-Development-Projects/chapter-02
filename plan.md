@@ -30,4 +30,3 @@ As a user, I...
 - should be able to "like" a comment or a post
 - should be able to "unlike" a comment or post that I have previously liked
 - should still have my posts and comments in existence even if I delete my account
-  
