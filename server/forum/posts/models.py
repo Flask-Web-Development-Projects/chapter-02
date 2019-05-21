@@ -66,6 +66,7 @@ class Post(db.Model):
     views = db.Column(db.Integer, default=0)
     liked_by = db.relationship('User', secondary=posts, lazy='subquery',
         backref=db.backref('liked', lazy=True))
+    comments = db.relationship('Comment', backref='post', lazy=True)
     
     def to_json(self) -> dict:
         """Returns the post's fields in a JSON serializable format.
@@ -86,5 +87,6 @@ class Post(db.Model):
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
             'views': self.views,
-            'liked_by': [user.username for user in self.liked_by]
+            'liked_by': [user.username for user in self.liked_by],
+            'comments': [comment.to_json() for comment in self.comments]
         }

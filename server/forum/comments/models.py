@@ -35,4 +35,34 @@ class Comment(db.Model):
     to_json()
         Returns the comment's fields in a JSON serializable format
     """
-    pass
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text, nullable=False)
+    author_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id'), nullable=False
+    )
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    post_id = db.Column(
+        db.Integer,
+        db.ForeignKey('post.id')
+    )
+
+    def to_json(self) -> dict:
+        """Returns the comment's fields in a JSON serializable format.
+        
+        Returns
+        -------
+        dict
+            The comment's ID as integer, body as string, author as string of
+            just username, creation_date as formatted datetime string,
+            last_updated as formatted datetime string
+        """
+        return {
+            'id': self.id,
+            'body': self.body,
+            'author': self.author.username,
+            'creation_date': self.creation_date.strftime(TIME_FMT),
+            'last_updated': self.last_updated.strftime(TIME_FMT),
+            'parent': self.post_id
+        }
