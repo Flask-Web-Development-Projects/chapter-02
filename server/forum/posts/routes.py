@@ -63,6 +63,11 @@ def get_posts() -> Response:
 def get_post(post_id: int) -> Response:
     """Get a post by ID.
 
+    Parameters
+    ----------
+    post_id : int
+        The ID of the requested post
+
     Returns
     -------
     Response
@@ -112,3 +117,25 @@ def delete_post(post_id: int) -> Response:
     response = Response()
     response.status_code = status.HTTP_204_NO_CONTENT
     return response
+
+@post_routes.route('/posts/<int:post_id>', methods=["PUT"])
+@auth.login_required
+def update_post(post_id: int) -> Response:
+    """Update the post with new data.
+
+    If the user is the post author, update the post title or body.
+    Regardless of who is the user, if the post is viewed then update the 
+    view count. If the post is liked, add the user to the list of users
+    that liked the post.
+
+    Parameters
+    ----------
+    post_id : int
+        The ID of the requested post
+
+    Returns
+    -------
+    Response
+        The response contains the updated post content
+    """
+    pass
