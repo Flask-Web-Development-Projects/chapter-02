@@ -96,3 +96,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-11](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-11) creates the post listing endpoint as well as allows the user to get individual posts by ID
 - [checkpoint-12](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-12) creates the post editing and deletion endpoints
 - [checkpoint-13](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-13) creates the Comment model
+- [checkpoint-14](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-14) creates the Comment routes

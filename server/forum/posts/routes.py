@@ -5,7 +5,7 @@ from flask_api import status
 
 from forum import db
 from forum.auth import auth, authenticate
-from forum.users.models import get_user, get_user_from_request, User
+from forum.users.models import get_user_from_request, User
 from forum.posts.models import Post
 
 post_routes = Blueprint('post_routes', __name__)
