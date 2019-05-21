@@ -14,6 +14,8 @@ db = SQLAlchemy(app)
 from forum.constants import API_PREFIX
 from forum.users.routes import user_routes
 from forum.posts.routes import post_routes
+from forum.comments.routes import comment_routes
 
 app.register_blueprint(user_routes, url_prefix=API_PREFIX)
 app.register_blueprint(post_routes, url_prefix=API_PREFIX)
+app.register_blueprint(comment_routes, url_prefix=API_PREFIX)
