@@ -4,6 +4,7 @@ from flask_migrate import Migrate, MigrateCommand
 from forum import app, db
 from forum.users.models import User
 from forum.posts.models import Post
+from forum.comments.models import Comment
 
 migrate = Migrate(app, db)
 
