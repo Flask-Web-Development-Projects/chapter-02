@@ -99,3 +99,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-14](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-14) creates the Comment routes
 - [checkpoint-15](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-15) starts the React app
 - [checkpoint-16](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-16) creates the initial listing of forum posts on the front page
+- [checkpoint-17](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-17) adds view count, like count, and comment count to the post listing
