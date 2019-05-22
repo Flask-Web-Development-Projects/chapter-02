@@ -14,7 +14,14 @@ const App: FunctionComponent = () => {
     const url = `${API_HOST}/posts`;
     const result = await axios.get(url);
 
-    setPosts(result.data.posts);
+
+    setPosts(result.data.posts
+      .sort((post1: Post, post2: Post) => {
+        let date1 = new Date(post1.creation_date);
+        let date2 = new Date(post2.creation_date);
+        return date1 > date2 ? 1 : -1;
+      })
+    );
   }
 
   useEffect(() => {
