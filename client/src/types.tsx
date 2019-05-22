@@ -1,5 +1,5 @@
 export interface Post {
-    _id: number;
+    id: number;
     title: string;
     body: string;
     author: string;
@@ -7,5 +7,14 @@ export interface Post {
     last_updated: string;
     views: number;
     liked_by: Array<string>;
-    comments: Array<Object>;
+    comments: Array<Comment>;
+}
+
+export interface Comment {
+    id: number;
+    body: string;
+    author: string;
+    creation_date: string;
+    last_updated: string;
+    parent: number;
 }
