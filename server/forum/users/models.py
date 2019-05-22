@@ -47,6 +47,7 @@ class User(db.Model):
     bio = db.Column(db.Text)
     token = db.Column(db.Unicode)
     posts = db.relationship('Post', backref='author', lazy=True)
+    comments = db.relationship('Comment', backref='author', lazy=True)
 
     def __init__(self, *args, **kwargs) -> None:
         """Overrides the inherited init method to hash incoming passwords."""
