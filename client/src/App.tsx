@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { PostList } from './components/PostList';
 import { Post } from './types';
 import './App.css';
 
@@ -23,12 +24,7 @@ const App: FunctionComponent = () => {
   console.log(posts);
   return (
     <div className="App">
-      {posts.map((post: Post) => {
-        return <div>
-          <header>{post.title}</header>
-          <p>{post.body}</p>
-        </div>;
-      })}
+      <PostList posts={ posts } />
     </div>
   );
 }
