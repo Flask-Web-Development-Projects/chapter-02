@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { PostList } from './components/PostList';
+import { NoMatch } from './components/NoMatch';
 import { Post } from './types';
 import './App.css';
 
@@ -13,7 +15,6 @@ const App: FunctionComponent = () => {
   async function getAllPosts() {
     const url = `${API_HOST}/posts`;
     const result = await axios.get(url);
-
 
     setPosts(result.data.posts
       .sort((post1: Post, post2: Post) => {
@@ -30,9 +31,17 @@ const App: FunctionComponent = () => {
 
   console.log(posts);
   return (
-    <div className="App">
-      <PostList posts={ posts } />
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route
+            exact path="/"
+            render={() => <PostList posts={ posts } />}
+          />
+          <Route component={ NoMatch } />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
