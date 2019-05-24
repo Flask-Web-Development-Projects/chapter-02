@@ -10,7 +10,7 @@ export const PostListItem = ({ post }: Props) => {
   return <div>
     <header>
       <h2>{ post.title }</h2>
-      <h3>Written by { post.author }{ resolveTime(post) }</h3>
+      <h3>Written by { post.author }{ resolveTime(post.creation_date) }</h3>
     </header>
     <p>{ post.body }</p>
     <p>

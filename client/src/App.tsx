@@ -34,10 +34,7 @@ const App: FunctionComponent = () => {
     <Router>
       <div className="App">
         <Switch>
-          <Route
-            exact path="/"
-            render={() => <PostList posts={ posts } />}
-          />
+          <Route exact path="/" render={() => <PostList posts={ posts } />}/>
           <Route component={ NoMatch } />
         </Switch>
       </div>
