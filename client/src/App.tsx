@@ -14,6 +14,7 @@ const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
   const [ isLoggedIn, setLogin ] = useState(false);
   const [ showLoginForm, toggleLoginForm ] = useState(false);
+  const [ user, setUser ] = useState();
 
   async function getAllPosts() {
     const url = `${API_HOST}/posts`;
@@ -28,6 +29,17 @@ const App: FunctionComponent = () => {
     );
   }
 
+  async function submitLogin(username: string, password: string, rememberMe: boolean) {
+    const url = `${API_HOST}/users/login`;
+    const result = await axios.post(url, { username, password });
+
+    if (result.status == 200) {
+      setLogin(true);
+      toggleLoginForm(false);
+
+    }
+  }
+
   useEffect(() => {
     getAllPosts();
   }, []);
@@ -40,7 +52,7 @@ const App: FunctionComponent = () => {
           <h1>Flask Forum</h1>
           { isLoggedIn ? null : <button onClick={ () => toggleLoginForm(true)}>Login</button> }
         </section>
-        { showLoginForm ? <section id="overlay"><LoginForm /></section> : null }
+        { showLoginForm ? <section id="overlay"><LoginForm onSubmit={ submitLogin }/></section> : null }
         <Switch>
           <Route exact path="/" render={() => <PostList posts={ posts } />}/>
           <Route component={ NoMatch } />

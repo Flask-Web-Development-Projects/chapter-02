@@ -1,7 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
+interface Props {
+    onSubmit: (username: string, password: string, rememberMe: boolean) => {}
+}
 
-export const LoginForm = () => {
+export const LoginForm = ({ onSubmit }: Props) => {
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ rememberMe, setRememberMe ] = useState(false);
@@ -17,6 +20,7 @@ export const LoginForm = () => {
     }
     const submitLogin = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        onSubmit(username, password, rememberMe);
         setPassword('');
     }
 
