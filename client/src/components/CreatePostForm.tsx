@@ -11,7 +11,7 @@ export const CreatePostForm = ({ createPost }: Props) => {
     const updateTitle = (event: ChangeEvent<HTMLInputElement>) => {
       setTitle(event.target.value);
     };
-    const updateBody = (event: ChangeEvent<HTMLInputElement>) => {
+    const updateBody = (event: ChangeEvent<HTMLTextAreaElement>) => {
       setBody(event.target.value);
     }
     const submitPost = (event: FormEvent<HTMLFormElement>) => {
@@ -31,8 +31,8 @@ export const CreatePostForm = ({ createPost }: Props) => {
       </div>
       <div>
         <label htmlFor="post-body">Body:</label>
-        <input
-          type="text" name="post-body"
+        <textarea
+          name="post-body"
           value={ body } onChange={ updateBody }
         />
       </div>
