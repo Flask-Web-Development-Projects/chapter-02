@@ -6,11 +6,14 @@ import { PostList } from './components/PostList';
 import { NoMatch } from './components/NoMatch';
 import { Post } from './types';
 import './App.css';
+import { LoginForm } from './components/LoginForm';
 
 const API_HOST = `${process.env.REACT_APP_API_HOST || "http://localhost:5000"}/api/v1`;
 
 const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
+  const [ isLoggedIn, setLogin ] = useState(false);
+  const [ showLoginForm, toggleLoginForm ] = useState(false);
 
   async function getAllPosts() {
     const url = `${API_HOST}/posts`;
@@ -33,6 +36,11 @@ const App: FunctionComponent = () => {
   return (
     <Router>
       <div className="App">
+        <section>
+          <h1>Flask Forum</h1>
+          { isLoggedIn ? null : <button onClick={ () => toggleLoginForm(true)}>Login</button> }
+        </section>
+        { showLoginForm ? <section id="overlay"><LoginForm /></section> : null }
         <Switch>
           <Route exact path="/" render={() => <PostList posts={ posts } />}/>
           <Route component={ NoMatch } />
