@@ -37,7 +37,7 @@ export const CreatePostForm = ({ createPost }: Props) => {
         />
       </div>
       <div>
-        <button type="submit">Create Post</button>
+        <button type="submit">Submit Post</button>
       </div>
     </form>
 }

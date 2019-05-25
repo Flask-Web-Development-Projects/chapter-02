@@ -39,7 +39,7 @@ def create_post() -> Response:
         db.session.add(new_post)
         db.session.commit()
 
-        response = jsonify(new_post.to_json)
+        response = jsonify(new_post.to_json())
         response.status_code = status.HTTP_201_CREATED
         return response
 
