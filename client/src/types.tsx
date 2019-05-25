@@ -26,4 +26,10 @@ export interface User {
   last_updated: string;
   bio: string;
   posts: Array<Post>;
+  token: string;
 }
+
+export const defaultUser = {
+  id: -1, username: '', creation_date: '', last_updated: '',
+  bio: '', posts: [], token: ''
+};

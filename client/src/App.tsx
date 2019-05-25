@@ -2,12 +2,15 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { PostList } from './components/PostList';
-import { NoMatch } from './components/NoMatch';
-import { Post } from './types';
-import './App.css';
+import { CreatePostForm } from './components/CreatePostForm';
 import { LoginForm } from './components/LoginForm';
+import { PostList } from './components/PostList';
 import { RegistrationForm } from './components/RegistrationForm';
+import { NoMatch } from './components/NoMatch';
+
+import { Post, User, defaultUser } from './types';
+
+import './App.css';
 
 const API_HOST = `${process.env.REACT_APP_API_HOST || "http://localhost:5000"}/api/v1`;
 
@@ -15,25 +18,29 @@ const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
 
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+
+  const [ displayPostForm, togglePostForm ] = useState(false);
   const [ displayLoginForm, toggleLoginForm ] = useState(false);
   const [ displayRegistrationForm, toggleRegistrationForm ] = useState(false);
   
   const [ loginError, setLoginError ] = useState('');
   const [ registrationError, setRegistrationError ] = useState('');
   
-  const [ user, setUser ] = useState(null);
+  const [ user, setUser ] = useState<User>(defaultUser);
+
+  const sortPosts = (posts: Array<Post>) => {
+    return posts.sort((post1: Post, post2: Post) => {
+      let date1 = new Date(post1.creation_date);
+      let date2 = new Date(post2.creation_date);
+      return date1 > date2 ? 1 : -1;
+    });
+  };
 
   async function getAllPosts() {
     const url = `${API_HOST}/posts`;
     const result = await axios.get(url);
-
-    setPosts(result.data.posts
-      .sort((post1: Post, post2: Post) => {
-        let date1 = new Date(post1.creation_date);
-        let date2 = new Date(post2.creation_date);
-        return date1 > date2 ? 1 : -1;
-      })
-    );
+    const sortedPosts = sortPosts(result.data.posts);
+    setPosts(sortedPosts);
   }
 
   async function submitLogin(
@@ -88,6 +95,21 @@ const App: FunctionComponent = () => {
     }
   }
 
+  async function createPost(title: string, body: string) {
+    const url = `${API_HOST}/posts`;
+    if (user.token !== '') {
+      const result = await axios.post(
+        url, { title, body }, { headers: { 'Authorization': `Bearer ${user.token}` }}
+      );
+
+      const newPost = result.data;
+      const sortedPosts = posts.concat(newPost);
+      setPosts(sortedPosts);
+
+      togglePostForm(false);
+    }
+  }
+
   useEffect(() => {
     getUser();
     getAllPosts();
@@ -95,6 +117,8 @@ const App: FunctionComponent = () => {
 
   const loginProps = { onSubmit: submitLogin, loginError };
   const registrationProps = { createUser, registrationError };
+  const postFormProps = { createPost };
+
   return (
     <Router>
       <div className="App">
@@ -102,7 +126,9 @@ const App: FunctionComponent = () => {
           <h1>Flask Forum</h1>
           { 
             isLoggedIn ?
-            <button>Create Post</button> :
+            <>
+              <button onClick={ () => togglePostForm(true) }>Create Post</button>
+            </>:
             <>
               <button onClick={ () => {
                 toggleLoginForm(true);
@@ -124,6 +150,11 @@ const App: FunctionComponent = () => {
           {
             displayRegistrationForm ?
             <RegistrationForm {...registrationProps} /> :
+            null
+          }
+          {
+            displayPostForm ?
+            <CreatePostForm {...postFormProps} /> :
             null
           }
         </section>
