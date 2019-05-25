@@ -27,7 +27,8 @@ def authenticate(response: Response, user: User) -> Response:
         The full response object, now with a cookie
     """
     token = f"{user.username}:{user.token}"
-    response.set_cookie('auth_token', value=token)
+    response.headers.add('Authorization', token)
+    response.headers.add('Access-Control-Expose-Headers', 'Authorization')
     return response
 
 

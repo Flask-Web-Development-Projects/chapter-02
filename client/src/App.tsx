@@ -38,8 +38,8 @@ const App: FunctionComponent = () => {
       toggleLoginForm(false);
       setLoginError('');
       setUser(result.data);
+      if (rememberMe) localStorage.setItem('userToken',result.headers.authorization);
     } catch (error) {
-      console.error(error);
       setLoginError(error.response.data.error);
     }
   }
