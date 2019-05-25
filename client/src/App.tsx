@@ -7,14 +7,20 @@ import { NoMatch } from './components/NoMatch';
 import { Post } from './types';
 import './App.css';
 import { LoginForm } from './components/LoginForm';
+import { RegistrationForm } from './components/RegistrationForm';
 
 const API_HOST = `${process.env.REACT_APP_API_HOST || "http://localhost:5000"}/api/v1`;
 
 const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
+
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const [ displayLoginForm, toggleLoginForm ] = useState(false);
+  const [ displayRegistrationForm, toggleRegistrationForm ] = useState(false);
+  
   const [ loginError, setLoginError ] = useState('');
+  const [ registrationError, setRegistrationError ] = useState('');
+  
   const [ user, setUser ] = useState(null);
 
   async function getAllPosts() {
@@ -62,12 +68,33 @@ const App: FunctionComponent = () => {
     }
   }
 
+  async function createUser(
+    username: string,
+    password: string,
+    password2: string,
+    rememberMe: boolean
+  ) {
+    const url = `${API_HOST}/users`;
+    try {
+      const result = await axios.post(url, { username, password, password2 });
+      setIsLoggedIn(true);
+      toggleRegistrationForm(false);
+      setRegistrationError('');
+      const token = result.headers.authorization;
+      setUser({ ...result.data, token });
+      if (rememberMe) localStorage.setItem('userToken', token);
+    } catch (error) {
+      setRegistrationError(error.response.data.error);
+    }
+  }
+
   useEffect(() => {
     getUser();
     getAllPosts();
   }, []);
 
-  console.log(posts);
+  const loginProps = { onSubmit: submitLogin, loginError };
+  const registrationProps = { createUser, registrationError };
   return (
     <Router>
       <div className="App">
@@ -75,20 +102,31 @@ const App: FunctionComponent = () => {
           <h1>Flask Forum</h1>
           { 
             isLoggedIn ?
-            null :
-            <button onClick={ () => toggleLoginForm(true)}>Login</button>
+            <button>Create Post</button> :
+            <>
+              <button onClick={ () => {
+                toggleLoginForm(true);
+                toggleRegistrationForm(false);
+              } }>Login</button>
+              <button onClick={ () => {
+                toggleLoginForm(false);
+                toggleRegistrationForm(true);
+              } }>Register</button>
+            </>
           }
         </section>
-        { 
-          displayLoginForm ?
-          <section id="overlay">
-            <LoginForm
-              onSubmit={ submitLogin }
-              loginError={ loginError }
-            />
-          </section> :
-          null
-        }
+        <section id="overlay">
+          {
+            displayLoginForm ?
+            <LoginForm {...loginProps} /> :
+            null
+          }
+          {
+            displayRegistrationForm ?
+            <RegistrationForm {...registrationProps} /> :
+            null
+          }
+        </section>
         <Switch>
           <Route exact path="/" render={() => <PostList posts={ posts } />}/>
           <Route component={ NoMatch } />
