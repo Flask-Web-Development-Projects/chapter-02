@@ -36,7 +36,9 @@ const App: FunctionComponent = () => {
     );
   }
 
-  async function submitLogin(username: string, password: string, rememberMe: boolean) {
+  async function submitLogin(
+    username: string, password: string, rememberMe: boolean
+  ) {
     const url = `${API_HOST}/users/login`;
     try {
       const result = await axios.post(url, { username, password });
@@ -69,10 +71,8 @@ const App: FunctionComponent = () => {
   }
 
   async function createUser(
-    username: string,
-    password: string,
-    password2: string,
-    rememberMe: boolean
+    username: string, password: string,
+    password2: string, rememberMe: boolean
   ) {
     const url = `${API_HOST}/users`;
     try {
