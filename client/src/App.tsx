@@ -32,7 +32,7 @@ const App: FunctionComponent = () => {
     return posts.sort((post1: Post, post2: Post) => {
       let date1 = new Date(post1.creation_date);
       let date2 = new Date(post2.creation_date);
-      return date1 > date2 ? 1 : -1;
+      return date1 < date2 ? 1 : -1;
     });
   };
 
@@ -103,7 +103,7 @@ const App: FunctionComponent = () => {
       );
 
       const newPost = result.data;
-      const sortedPosts = posts.concat(newPost);
+      const sortedPosts = sortPosts(posts.concat(newPost));
       setPosts(sortedPosts);
 
       togglePostForm(false);
