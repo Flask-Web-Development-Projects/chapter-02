@@ -36,37 +36,37 @@ export const RegistrationForm = ({ createUser, registrationError }: Props) => {
   }
 
   return <form onSubmit={submitUser}>
-      {registrationError ? <div>{registrationError}</div> : null}
-      <div>
-          <label htmlFor="username">Username:</label>
-          <input
-              type="text" name="username"
-              value={username} onChange={updateUsername}
-          />
-      </div>
-      <div>
-          <label htmlFor="password">Password:</label>
-          <input
-              type="password" name="password"
-              value={password} onChange={updatePassword}
-          />
-      </div>
-      <div>
-          <label htmlFor="password2">Confirm Password:</label>
-          <input
-              type="password" name="password2"
-              value={password2} onChange={updatePassword2}
-          />
-      </div>
-      <div>
-          <input
-              type="checkbox" name="remember-me"
-              checked={rememberMe} onChange={updateRememberMe}
-          />
-          <label htmlFor="remember-me">Remember me</label>
-      </div>
-      <div>
-          <button type="submit">Create User</button>
-      </div>
+    {registrationError ? <div>{registrationError}</div> : null}
+    <div>
+      <label htmlFor="username">Username:</label>
+      <input
+        type="text" name="username"
+        value={username} onChange={updateUsername}
+      />
+    </div>
+    <div>
+      <label htmlFor="password">Password:</label>
+      <input
+        type="password" name="password"
+        value={password} onChange={updatePassword}
+      />
+    </div>
+    <div>
+      <label htmlFor="password2">Confirm Password:</label>
+      <input
+        type="password" name="password2"
+        value={password2} onChange={updatePassword2}
+      />
+    </div>
+    <div>
+      <input
+        type="checkbox" name="remember-me"
+        checked={rememberMe} onChange={updateRememberMe}
+      />
+      <label htmlFor="remember-me">Remember me</label>
+    </div>
+    <div>
+      <button type="submit">Create User</button>
+    </div>
   </form>
 }
