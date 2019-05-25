@@ -37,14 +37,33 @@ const App: FunctionComponent = () => {
       setIsLoggedIn(true);
       toggleLoginForm(false);
       setLoginError('');
-      setUser(result.data);
-      if (rememberMe) localStorage.setItem('userToken',result.headers.authorization);
+      const token = result.headers.authorization;
+      setUser({...result.data, token});
+      if (rememberMe) localStorage.setItem('userToken', token);
     } catch (error) {
       setLoginError(error.response.data.error);
     }
   }
 
+  async function getUser() {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      const username = token.split(':')[0];
+      const url = `${API_HOST}/users/${username}/authenticate`;
+      try {
+        const result = await axios.post(url, {}, {
+          headers: {'Authorization': `Bearer ${token}`}
+        });
+        setIsLoggedIn(true);
+        setUser({ ...result.data, token });
+      } catch {
+        localStorage.removeItem('userToken');
+      }
+    }
+  }
+
   useEffect(() => {
+    getUser();
     getAllPosts();
   }, []);
 

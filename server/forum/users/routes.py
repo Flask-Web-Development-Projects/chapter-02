@@ -226,3 +226,21 @@ def get_account(username: str) -> Response:
         return response
 
     return jsonify(user.to_json())
+
+@user_routes.route('/users/<string:username>/authenticate', methods=['POST'])
+@auth.login_required
+def authenticate_account(username: str) -> Response:
+    """Retrieve account details after verifying request credentials.
+    
+    Parameters
+    ----------
+    username : str
+        The username of the requested account
+
+    Returns
+    -------
+    Response
+        The details of the user account in JSON format. 
+    """
+    user = get_user(username)
+    return jsonify(user.to_json())
