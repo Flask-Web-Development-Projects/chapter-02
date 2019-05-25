@@ -102,5 +102,5 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-17](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-17) adds view count, like count, comment count, and creation date to the post listing
 - [checkpoint-18](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-18) adds react router, the home route, and the not found route
 - [checkpoint-19](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-19) handles the post detail route
-- [checkpoint-20](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-20) handles user registration
+- [checkpoint-20](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-20) handles user login
 - 
