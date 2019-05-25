@@ -73,7 +73,11 @@ const App: FunctionComponent = () => {
       <div className="App">
         <section>
           <h1>Flask Forum</h1>
-          { isLoggedIn ? null : <button onClick={ () => toggleLoginForm(true)}>Login</button> }
+          { 
+            isLoggedIn ?
+            null :
+            <button onClick={ () => toggleLoginForm(true)}>Login</button>
+          }
         </section>
         { 
           displayLoginForm ?
