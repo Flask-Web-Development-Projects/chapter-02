@@ -1,10 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 interface Props {
-    onSubmit: (username: string, password: string, rememberMe: boolean) => {}
+    onSubmit: (username: string, password: string, rememberMe: boolean) => {};
+    loginError?: string;
 }
 
-export const LoginForm = ({ onSubmit }: Props) => {
+export const LoginForm = ({ onSubmit, loginError }: Props) => {
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ rememberMe, setRememberMe ] = useState(false);
@@ -25,6 +26,7 @@ export const LoginForm = ({ onSubmit }: Props) => {
     }
 
     return <form onSubmit={ submitLogin }>
+        {loginError ? <div>{loginError}</div> : null}
         <div>
             <label htmlFor="username">Username:</label>
             <input

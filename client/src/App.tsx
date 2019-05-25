@@ -12,8 +12,9 @@ const API_HOST = `${process.env.REACT_APP_API_HOST || "http://localhost:5000"}/a
 
 const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
-  const [ isLoggedIn, setLogin ] = useState(false);
-  const [ showLoginForm, toggleLoginForm ] = useState(false);
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const [ displayLoginForm, toggleLoginForm ] = useState(false);
+  const [ loginError, setLoginError ] = useState('');
   const [ user, setUser ] = useState(null);
 
   async function getAllPosts() {
@@ -31,12 +32,15 @@ const App: FunctionComponent = () => {
 
   async function submitLogin(username: string, password: string, rememberMe: boolean) {
     const url = `${API_HOST}/users/login`;
-    const result = await axios.post(url, { username, password });
-
-    if (result.status == 200) {
-      setLogin(true);
+    try {
+      const result = await axios.post(url, { username, password });
+      setIsLoggedIn(true);
       toggleLoginForm(false);
+      setLoginError('');
       setUser(result.data);
+    } catch (error) {
+      console.error(error);
+      setLoginError(error.response.data.error);
     }
   }
 
@@ -52,7 +56,16 @@ const App: FunctionComponent = () => {
           <h1>Flask Forum</h1>
           { isLoggedIn ? null : <button onClick={ () => toggleLoginForm(true)}>Login</button> }
         </section>
-        { showLoginForm ? <section id="overlay"><LoginForm onSubmit={ submitLogin }/></section> : null }
+        { 
+          displayLoginForm ?
+          <section id="overlay">
+            <LoginForm
+              onSubmit={ submitLogin }
+              loginError={ loginError }
+            />
+          </section> :
+          null
+        }
         <Switch>
           <Route exact path="/" render={() => <PostList posts={ posts } />}/>
           <Route component={ NoMatch } />
