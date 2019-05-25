@@ -49,7 +49,7 @@ export const LoginForm = ({ onSubmit, loginError }: Props) => {
             <label htmlFor="remember-me">Remember me</label>
         </div>
         <div>
-            <button type="submit">Submit</button>
+            <button type="submit">Log In</button>
         </div>
     </form>
 }

@@ -66,7 +66,7 @@ export const RegistrationForm = ({ createUser, registrationError }: Props) => {
           <label htmlFor="remember-me">Remember me</label>
       </div>
       <div>
-          <button type="submit">Submit</button>
+          <button type="submit">Create User</button>
       </div>
   </form>
 }
