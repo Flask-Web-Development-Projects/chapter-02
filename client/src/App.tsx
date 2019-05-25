@@ -14,7 +14,7 @@ const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
   const [ isLoggedIn, setLogin ] = useState(false);
   const [ showLoginForm, toggleLoginForm ] = useState(false);
-  const [ user, setUser ] = useState();
+  const [ user, setUser ] = useState(null);
 
   async function getAllPosts() {
     const url = `${API_HOST}/posts`;
@@ -36,7 +36,7 @@ const App: FunctionComponent = () => {
     if (result.status == 200) {
       setLogin(true);
       toggleLoginForm(false);
-
+      setUser(result.data);
     }
   }
 
