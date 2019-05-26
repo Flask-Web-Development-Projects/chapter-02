@@ -1,13 +1,12 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch, RouteComponentProps, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, RouteComponentProps } from 'react-router-dom';
 
-import { CreatePostForm } from './components/CreatePostForm';
-import { LoginForm } from './components/LoginForm';
+import { ForumHeader } from './components/ForumHeader';
+import { NoMatch } from './components/NoMatch';
+import { Overlay } from './components/Overlay';
 import { PostDetail } from './components/PostDetail';
 import { PostList } from './components/PostList';
-import { RegistrationForm } from './components/RegistrationForm';
-import { NoMatch } from './components/NoMatch';
 
 import { Post, User, defaultUser } from './types';
 
@@ -124,54 +123,23 @@ const App: FunctionComponent = () => {
     return post ? <PostDetail post={ post }/> : <NoMatch {...noMatchProps} />;
   }
 
-  const loginProps = { onSubmit: submitLogin, loginError };
-  const registrationProps = { createUser, registrationError };
-  const postFormProps = { createPost };
+  const headerProps = { isLoggedIn, toggleLoginForm, togglePostForm, toggleRegistrationForm};
+  const overlayProps = {
+    displayLoginForm, displayPostForm, displayRegistrationForm,
+    createPost, createUser, submitLogin, loginError,
+    registrationError
+  };
 
   return (
     <Router>
       <div className="App">
-        <section>
-          <Link to="/">
-            <h1>Flask Forum</h1>
-          </Link>
-          { 
-            isLoggedIn ?
-            <>
-              <button onClick={ () => togglePostForm(true) }>Create Post</button>
-            </>:
-            <>
-              <button onClick={ () => {
-                toggleLoginForm(true);
-                toggleRegistrationForm(false);
-              } }>Login</button>
-              <button onClick={ () => {
-                toggleLoginForm(false);
-                toggleRegistrationForm(true);
-              } }>Register</button>
-            </>
-          }
-        </section>
-        <section id="overlay">
-          {
-            displayLoginForm ?
-            <LoginForm {...loginProps} /> :
-            null
-          }
-          {
-            displayRegistrationForm ?
-            <RegistrationForm {...registrationProps} /> :
-            null
-          }
-          {
-            displayPostForm ?
-            <CreatePostForm {...postFormProps} /> :
-            null
-          }
-        </section>
+        <ForumHeader {...headerProps} />
+        <Overlay {...overlayProps}/>
         <Switch>
           <Route path="/posts/:id" component={SelectPost} />
-          <Route exact path="/" render={() => <PostList posts={ posts } />}/>
+          <Route exact path="/" render={
+            () => <PostList posts={ posts } />
+          }/>
           <Route component={ NoMatch } />
         </Switch>
       </div>
