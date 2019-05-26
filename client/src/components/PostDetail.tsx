@@ -3,11 +3,10 @@ import { Post, Comment } from '../types';
 import { resolveTime } from '../util';
 
 interface Props {
-    post?: Post;
+    post: Post;
 }
 
 export const PostDetail = ({ post }: Props) => {
-  if (!post) return;
   return <div>
     <header>
       <h2>{post.title}</h2>
@@ -18,12 +17,12 @@ export const PostDetail = ({ post }: Props) => {
       <span>{post.views} views</span>
       <span>{post.liked_by.length} likes</span>
     </p>
-    { post.comments.map((comment: Comment) => {
+    { post.comments.map((comment: Comment) => 
       <div key={ comment.id }>
         <p>{ comment.body }</p>
         <p>Written by { comment.author }</p>
         <p>Posted {resolveTime( comment.creation_date )} </p>
       </div>
-    }) }
+    ) }
   </div>
 }

@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, RouteComponentProps } from 'react-router-dom';
 
 import { CreatePostForm } from './components/CreatePostForm';
 import { LoginForm } from './components/LoginForm';
+import { PostDetail } from './components/PostDetail';
 import { PostList } from './components/PostList';
 import { RegistrationForm } from './components/RegistrationForm';
 import { NoMatch } from './components/NoMatch';
@@ -115,6 +116,14 @@ const App: FunctionComponent = () => {
     getAllPosts();
   }, []);
 
+  type RouteVars = { id: string };
+  const SelectPost = ({ match, ...props }: RouteComponentProps<RouteVars>) => {
+    const postId = match.params.id;
+    const post = posts.find((post: Post) => post.id === parseInt(postId));
+    const noMatchProps = { match, ...props};
+    return post ? <PostDetail post={ post }/> : <NoMatch {...noMatchProps} />;
+  }
+
   const loginProps = { onSubmit: submitLogin, loginError };
   const registrationProps = { createUser, registrationError };
   const postFormProps = { createPost };
@@ -159,6 +168,7 @@ const App: FunctionComponent = () => {
           }
         </section>
         <Switch>
+          <Route path="/posts/:id" component={SelectPost} />
           <Route exact path="/" render={() => <PostList posts={ posts } />}/>
           <Route component={ NoMatch } />
         </Switch>
