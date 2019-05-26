@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch, RouteComponentProps } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, RouteComponentProps, Link } from 'react-router-dom';
 
 import { CreatePostForm } from './components/CreatePostForm';
 import { LoginForm } from './components/LoginForm';
@@ -132,7 +132,9 @@ const App: FunctionComponent = () => {
     <Router>
       <div className="App">
         <section>
-          <h1>Flask Forum</h1>
+          <Link to="/">
+            <h1>Flask Forum</h1>
+          </Link>
           { 
             isLoggedIn ?
             <>
