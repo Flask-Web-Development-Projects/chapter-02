@@ -1,6 +1,8 @@
 import React from 'react';
-import { Post } from '../types';
+import { Link } from 'react-router-dom';
+
 import { resolveTime } from '../util';
+import { Post } from '../types';
 
 interface Props {
   post: Post;
@@ -8,10 +10,12 @@ interface Props {
 
 export const PostListItem = ({ post }: Props) => {
   return <div>
-    <header>
-      <h2>{ post.title }</h2>
-      <h3>Written by { post.author }{ resolveTime(post.creation_date) }</h3>
-    </header>
+    <Link to={ `/posts/${ post.id }` }>
+      <header>
+        <h2>{ post.title }</h2>
+        <h3>Written by { post.author }{ resolveTime(post.creation_date) }</h3>
+      </header>
+    </Link>
     <p>{ post.body }</p>
     <p>
       <span>{ post.views } views</span>
