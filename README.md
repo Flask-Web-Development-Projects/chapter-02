@@ -105,3 +105,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-20](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-20) handles user login
 - [checkpoint-21](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-21) sets up registration
 - [checkpoint-22](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-22) adds functionality to the create post button
+- [checkpoint-23](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-23) add links into the post listing
