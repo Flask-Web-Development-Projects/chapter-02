@@ -81,6 +81,11 @@ const App: FunctionComponent = () => {
     }
   }
 
+  const logoutUser = () => {
+    setUser(defaultUser);
+    localStorage.clear();
+  }
+
   const sortPosts = (posts: Array<Post>) => {
     return posts.sort((post1: Post, post2: Post) => {
       let date1 = new Date(post1.creation_date);
@@ -155,7 +160,10 @@ const App: FunctionComponent = () => {
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
 
-  const headerProps = { isLoggedIn, toggleLoginForm, togglePostForm, toggleRegistrationForm};
+  const headerProps = {
+    isLoggedIn, logoutUser, toggleLoginForm, 
+    togglePostForm, toggleRegistrationForm
+  };
   const overlayProps = {
     displayLoginForm, displayPostForm, displayRegistrationForm,
     createPost, createUser, submitLogin, loginError,
