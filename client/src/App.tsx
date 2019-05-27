@@ -110,6 +110,21 @@ const App: FunctionComponent = () => {
     }
   }
 
+  async function editPost(oldPost: Post, title: string, body: string) {
+    const url = `${API_HOST}/posts/${oldPost.id}`;
+    if (user.token !== '') {
+      const result = await axios.post(
+        url, { title, body }, { headers: { 'Authorization': `Bearer ${user.token}` } }
+      );
+
+      const sortedPosts = sortPosts(posts
+        .filter((post: Post) => post.id !== oldPost.id)
+        .concat(result.data)
+      )
+      setPosts(sortedPosts);
+    }
+  }
+
   useEffect(() => {
     getUser();
     getAllPosts();
@@ -120,7 +135,8 @@ const App: FunctionComponent = () => {
     const postId = match.params.id;
     const post = posts.find((post: Post) => post.id === parseInt(postId));
     const noMatchProps = { match, ...props};
-    return post ? <PostDetail post={ post }/> : <NoMatch {...noMatchProps} />;
+    const detailProps = { post, user };
+    return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
 
   const headerProps = { isLoggedIn, toggleLoginForm, togglePostForm, toggleRegistrationForm};
