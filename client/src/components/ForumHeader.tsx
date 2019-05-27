@@ -22,6 +22,7 @@ export const ForumHeader = ({
       isLoggedIn ?
       <>
         <button onClick={() => togglePostForm(true)}>Create Post</button>
+        <button onClick={() => {}}>Logout</button>
       </> :
       <>
         <button onClick={() => {
