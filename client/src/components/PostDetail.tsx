@@ -21,7 +21,7 @@ export const PostDetail = ({
       <h2>{post.title}</h2>
       <h3>Written by {post.author} {resolveTime(post.creation_date)} | Last updated { resolveTime(post.last_updated)}</h3>
     </header>
-    <p>{ beingEdited === post.id ? <PostUpdateForm {...updateFormComponents} /> : post.body}</p>
+    {beingEdited === post.id ? <PostUpdateForm {...updateFormComponents} /> : <p>{post.body}</p>}
     <p>
       <span>{post.views} views</span>
       <span>{post.liked_by.length} likes</span>
