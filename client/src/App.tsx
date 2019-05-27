@@ -28,6 +28,7 @@ const App: FunctionComponent = () => {
   const [ registrationError, setRegistrationError ] = useState('');
   
   const [ user, setUser ] = useState<User>(defaultUser);
+  const [ userToView, setUserToView ] = useState<User>(defaultUser);
 
   async function submitLogin(
     username: string, password: string, rememberMe: boolean
@@ -46,7 +47,7 @@ const App: FunctionComponent = () => {
     }
   }
 
-  async function getUser() {
+  async function getAuthenticatedUser() {
     const token = localStorage.getItem('userToken');
     if (token) {
       const username = token.split(':')[0];
@@ -61,6 +62,14 @@ const App: FunctionComponent = () => {
         localStorage.removeItem('userToken');
       }
     }
+  }
+
+  async function getUserByName(username: string) {
+    const url = `${API_HOST}/users/${username}`;
+    const result = await axios.get(url);
+
+    const viewedUser = {...result.data, token: ''};
+    setUserToView(viewedUser);
   }
 
   async function createUser(
@@ -150,7 +159,7 @@ const App: FunctionComponent = () => {
   }
 
   useEffect(() => {
-    getUser();
+    getAuthenticatedUser();
     getAllPosts();
   }, []);
 
