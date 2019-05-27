@@ -108,3 +108,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-23](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-23) add links into the post listing
 - [checkpoint-24](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-24) consolidate complex App logic into components
 - [checkpoint-25](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-25) allows the user to edit their post
+- [checkpoint-26](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-26) allows the user to delete their post

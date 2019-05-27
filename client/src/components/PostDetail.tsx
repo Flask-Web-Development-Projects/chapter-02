@@ -9,10 +9,11 @@ interface Props {
     beingEdited: number;
     setPostToEdit: Dispatch<SetStateAction<number>>;
     updatePost: (oldId: number, title: string, body: string) => {};
+    deletePost: (deletedPost: Post) => {};
 }
 
 export const PostDetail = ({
-  post, user, beingEdited, setPostToEdit, updatePost
+  post, user, beingEdited, setPostToEdit, updatePost, deletePost
 }: Props) => {
   if (!post) return null;
   const updateFormComponents = { post, updatePost };
@@ -27,7 +28,10 @@ export const PostDetail = ({
       <span>{post.liked_by.length} likes</span>
       { 
         (user && (user.username === post.author)) ?
-        <button onClick={ () => setPostToEdit(post.id) }>Edit</button> : 
+        <>
+          <button onClick={ () => setPostToEdit(post.id) }>Edit</button>
+          <button onClick={ () => deletePost(post) }>Delete</button>
+        </> : 
         null 
       }
     </p>

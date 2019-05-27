@@ -121,11 +121,24 @@ const App: FunctionComponent = () => {
       const sortedPosts = sortPosts(posts
         .filter((post: Post) => post.id !== oldId)
         .concat(result.data)
-      )
+      );
 
       setPosts(sortedPosts);
       setPostToEdit(-1);
     }
+  }
+
+  async function deletePost(deletedPost: Post) {
+    const url = `${API_HOST}/posts/${deletedPost.id}`;
+    await axios.delete(
+      url, { headers: {'Authorization': `Bearer ${user.token}`}}
+    )
+
+    const sortedPosts = sortPosts(posts
+      .filter((post: Post) => post.id !== deletedPost.id)
+    );
+
+    setPosts(sortedPosts);
   }
 
   useEffect(() => {
@@ -138,7 +151,7 @@ const App: FunctionComponent = () => {
     const postId = match.params.id;
     const post = posts.find((post: Post) => post.id === parseInt(postId));
     const noMatchProps = { match, ...props};
-    const detailProps = { post, user, beingEdited, setPostToEdit, updatePost };
+    const detailProps = { post, user, beingEdited, setPostToEdit, updatePost, deletePost };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
 
