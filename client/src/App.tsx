@@ -28,7 +28,6 @@ const App: FunctionComponent = () => {
   const [ registrationError, setRegistrationError ] = useState('');
   
   const [ user, setUser ] = useState<User>(defaultUser);
-  const [ userToView, setUserToView ] = useState<User>(defaultUser);
 
   async function submitLogin(
     username: string, password: string, rememberMe: boolean
@@ -62,14 +61,6 @@ const App: FunctionComponent = () => {
         localStorage.removeItem('userToken');
       }
     }
-  }
-
-  async function getUserByName(username: string) {
-    const url = `${API_HOST}/users/${username}`;
-    const result = await axios.get(url);
-
-    const viewedUser = {...result.data, token: ''};
-    setUserToView(viewedUser);
   }
 
   async function createUser(
@@ -172,15 +163,6 @@ const App: FunctionComponent = () => {
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
 
-  type UserRouteVars = { username: string };
-  const SelectUser = async ({ match, ...props }: RouteComponentProps<UserRouteVars>) => {
-    const username = match.params.username;
-    await getUserByName(username);
-    const noMatchProps = { match, ...props};
-    const detailProps = { user: userToView }
-    return userToView !== defaultUser ? <UserDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
-  }
-
   const headerProps = {
     isLoggedIn, logoutUser, toggleLoginForm, 
     togglePostForm, toggleRegistrationForm
@@ -198,7 +180,7 @@ const App: FunctionComponent = () => {
         <Overlay {...overlayProps}/>
         <Switch>
           <Route path="/posts/:id" component={SelectPost} />
-          <Route path="/:username" component={SelectUser} />
+          <Route path="/:username" component={UserDetail} />
           <Route exact path="/" render={
             () => <PostList posts={ posts } />
           }/>

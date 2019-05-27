@@ -10,9 +10,9 @@ interface Props {
 export const PostTitleList = ({ posts }: Props) => {
   return <div>
     { posts.map((post: Post) => {
-      return <Link to={ `/posts/${ post.id }` }>
+      return <Link to={ `/posts/${ post.id }` } key={ post.id }>
         <section>
-          <h4>{ post}</h4>
+          <h4>{ post.title }</h4>
           <h5>Written { resolveTime(post.creation_date)}</h5>
           <p>
             <span>{post.views} views</span>
