@@ -163,13 +163,21 @@ const App: FunctionComponent = () => {
     getAllPosts();
   }, []);
 
-  type RouteVars = { id: string };
-  const SelectPost = ({ match, ...props }: RouteComponentProps<RouteVars>) => {
+  type PostRouteVars = { id: string };
+  const SelectPost = ({ match, ...props }: RouteComponentProps<PostRouteVars>) => {
     const postId = match.params.id;
     const post = posts.find((post: Post) => post.id === parseInt(postId));
     const noMatchProps = { match, ...props};
     const detailProps = { post, user, beingEdited, setPostToEdit, updatePost, deletePost };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
+  }
+
+  type UserRouteVars = { username: string };
+  const SelectUser = async ({ match, ...props }: RouteComponentProps<UserRouteVars>) => {
+    const username = match.params.username;
+    await getUserByName(username);
+    const noMatchProps = { match, ...props};
+    return userToView !== defaultUser ? <UserDetail /> : <NoMatch {...noMatchProps} />;
   }
 
   const headerProps = {
@@ -189,6 +197,7 @@ const App: FunctionComponent = () => {
         <Overlay {...overlayProps}/>
         <Switch>
           <Route path="/posts/:id" component={SelectPost} />
+          <Route path="/:username" component={SelectUser} />
           <Route exact path="/" render={
             () => <PostList posts={ posts } />
           }/>
