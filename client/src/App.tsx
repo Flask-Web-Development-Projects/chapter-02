@@ -16,6 +16,7 @@ const API_HOST = `${process.env.REACT_APP_API_HOST || "http://localhost:5000"}/a
 
 const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
+  const [ beingEdited, setPostToEdit ] = useState(-1);
 
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
@@ -110,18 +111,20 @@ const App: FunctionComponent = () => {
     }
   }
 
-  async function editPost(oldPost: Post, title: string, body: string) {
-    const url = `${API_HOST}/posts/${oldPost.id}`;
+  async function updatePost(oldId: number, title: string, body: string) {
+    const url = `${API_HOST}/posts/${oldId}`;
     if (user.token !== '') {
-      const result = await axios.post(
+      const result = await axios.put(
         url, { title, body }, { headers: { 'Authorization': `Bearer ${user.token}` } }
       );
 
       const sortedPosts = sortPosts(posts
-        .filter((post: Post) => post.id !== oldPost.id)
+        .filter((post: Post) => post.id !== oldId)
         .concat(result.data)
       )
+
       setPosts(sortedPosts);
+      setPostToEdit(-1);
     }
   }
 
@@ -135,7 +138,7 @@ const App: FunctionComponent = () => {
     const postId = match.params.id;
     const post = posts.find((post: Post) => post.id === parseInt(postId));
     const noMatchProps = { match, ...props};
-    const detailProps = { post, user };
+    const detailProps = { post, user, beingEdited, setPostToEdit, updatePost };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
 

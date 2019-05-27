@@ -159,7 +159,7 @@ def update_post(post_id: int) -> Response:
         return response
 
     post.views += 1
-    if user not in post.liked_by:
+    if user not in post.liked_by and request.data.get('liked', False):
         post.liked_by.append(user)
     
     if user == post.author:

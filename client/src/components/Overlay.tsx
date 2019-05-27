@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreatePostForm } from './CreatePostForm';
+import { CreatePostForm } from './PostCreateForm';
 import { LoginForm } from './LoginForm';
 import { RegistrationForm } from './RegistrationForm';
 
