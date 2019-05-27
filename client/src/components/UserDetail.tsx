@@ -1,6 +1,7 @@
 import React from 'react';
 import { User } from '../types';
 import { resolveTime } from '../util';
+import { PostTitleList } from './PostTitleList';
 
 interface Props {
     user: User;
@@ -12,5 +13,6 @@ export const UserDetail = ({ user }: Props) => {
     <p>Account Created: {resolveTime(user.creation_date)}</p>
     { user.bio !== '' ? user.bio : null}
     <h3>Most Recent Posts</h3>
+    <PostTitleList posts={user.posts}/>
   </article>
 }
