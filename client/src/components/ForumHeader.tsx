@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 interface Props {
   isLoggedIn: boolean;
+  logoutUser: () => void;
   toggleLoginForm: Dispatch<SetStateAction<boolean>>;
   togglePostForm: Dispatch<SetStateAction<boolean>>;
   toggleRegistrationForm: Dispatch<SetStateAction<boolean>>;
@@ -10,6 +11,7 @@ interface Props {
 
 export const ForumHeader = ({
   isLoggedIn,
+  logoutUser,
   toggleLoginForm,
   togglePostForm,
   toggleRegistrationForm
@@ -22,7 +24,7 @@ export const ForumHeader = ({
       isLoggedIn ?
       <>
         <button onClick={() => togglePostForm(true)}>Create Post</button>
-        <button onClick={() => {}}>Logout</button>
+        <button onClick={logoutUser}>Logout</button>
       </> :
       <>
         <button onClick={() => {

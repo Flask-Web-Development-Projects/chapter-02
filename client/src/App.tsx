@@ -82,7 +82,10 @@ const App: FunctionComponent = () => {
   }
 
   const logoutUser = () => {
+    setIsLoggedIn(false);
     setUser(defaultUser);
+    setPostToEdit(-1);
+    togglePostForm(false);
     localStorage.clear();
   }
 
