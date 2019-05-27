@@ -7,6 +7,7 @@ import { NoMatch } from './components/NoMatch';
 import { Overlay } from './components/Overlay';
 import { PostDetail } from './components/PostDetail';
 import { PostList } from './components/PostList';
+import { UserDetail } from './components/UserDetail';
 
 import { Post, User, defaultUser } from './types';
 
@@ -177,7 +178,8 @@ const App: FunctionComponent = () => {
     const username = match.params.username;
     await getUserByName(username);
     const noMatchProps = { match, ...props};
-    return userToView !== defaultUser ? <UserDetail /> : <NoMatch {...noMatchProps} />;
+    const detailProps = { user: userToView }
+    return userToView !== defaultUser ? <UserDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
 
   const headerProps = {
