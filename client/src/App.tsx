@@ -10,10 +10,9 @@ import { PostList } from './components/PostList';
 import { UserDetail } from './components/UserDetail';
 
 import { Post, User, defaultUser } from './types';
+import { API_HOST } from './util';
 
 import './App.css';
-
-const API_HOST = `${process.env.REACT_APP_API_HOST || "http://localhost:5000"}/api/v1`;
 
 const App: FunctionComponent = () => {
   const [ posts, setPosts ] = useState<Array<Post>>([]);
