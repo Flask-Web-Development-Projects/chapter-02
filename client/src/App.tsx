@@ -29,21 +29,6 @@ const App: FunctionComponent = () => {
   
   const [ user, setUser ] = useState<User>(defaultUser);
 
-  const sortPosts = (posts: Array<Post>) => {
-    return posts.sort((post1: Post, post2: Post) => {
-      let date1 = new Date(post1.creation_date);
-      let date2 = new Date(post2.creation_date);
-      return date1 < date2 ? 1 : -1;
-    });
-  };
-
-  async function getAllPosts() {
-    const url = `${API_HOST}/posts`;
-    const result = await axios.get(url);
-    const sortedPosts = sortPosts(result.data.posts);
-    setPosts(sortedPosts);
-  }
-
   async function submitLogin(
     username: string, password: string, rememberMe: boolean
   ) {
@@ -94,6 +79,21 @@ const App: FunctionComponent = () => {
     } catch (error) {
       setRegistrationError(error.response.data.error);
     }
+  }
+
+  const sortPosts = (posts: Array<Post>) => {
+    return posts.sort((post1: Post, post2: Post) => {
+      let date1 = new Date(post1.creation_date);
+      let date2 = new Date(post2.creation_date);
+      return date1 < date2 ? 1 : -1;
+    });
+  };
+
+  async function getAllPosts() {
+    const url = `${API_HOST}/posts`;
+    const result = await axios.get(url);
+    const sortedPosts = sortPosts(result.data.posts);
+    setPosts(sortedPosts);
   }
 
   async function createPost(title: string, body: string) {
