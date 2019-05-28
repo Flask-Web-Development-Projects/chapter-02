@@ -10,12 +10,14 @@ interface Props {
 
 export const PostListItem = ({ post }: Props) => {
   return <div>
-    <Link to={ `/posts/${ post.id }` }>
-      <header>
+    <header>
+      <Link to={ `/posts/${ post.id }` }>
         <h2>{ post.title }</h2>
+      </Link>
+      <Link to={ `/users/${ post.author }` }>
         <h3>Written by { post.author }{ resolveTime(post.creation_date) }</h3>
-      </header>
-    </Link>
+      </Link>
+    </header>
     <p>{ post.body }</p>
     <p>
       <span>{ post.views } views</span>
