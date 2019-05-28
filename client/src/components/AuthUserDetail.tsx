@@ -8,9 +8,10 @@ interface Props {
   authUser: User;
   updateUser: (field: string, value: string) => {};
   updateUserPass: (oldPass: string, newPass: string, confirmPass: string) => {};
+  deleteUser: () => {};
 }
 
-export const AuthUserDetail = ({ authUser, updateUser, updateUserPass }: Props) => {
+export const AuthUserDetail = ({ authUser, updateUser, updateUserPass, deleteUser }: Props) => {
   const [ username, setUsername ] = useState('');
   const [ editingUsername, setUsernameEdit ] = useState(false);
 
@@ -121,7 +122,7 @@ export const AuthUserDetail = ({ authUser, updateUser, updateUserPass }: Props) 
         </> :
         <button onClick={() => setPassEdit(true)}>Change Password</button>
       }
-      <button>Delete User</button>
+      <button onClick={ deleteUser }>Delete User</button>
     </section>
     <section>
       {

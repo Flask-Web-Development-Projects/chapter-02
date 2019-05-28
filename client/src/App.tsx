@@ -234,7 +234,7 @@ const App: FunctionComponent = () => {
     createPost, createUser, submitLogin, loginError,
     registrationError
   };
-  const authUserDetailProps = { authUser: user, updateUser, updateUserPass };
+  const authUserDetailProps = { authUser: user, updateUser, updateUserPass, deleteUser };
 
   return (
     <Router>
