@@ -79,11 +79,12 @@ class Post(db.Model):
             datetime string, last_updated as formatted datetime string,
             views as integer, and liked_by as list of usernames
         """
+        author = self.author.username if self.author else 'undefined'
         return {
             'id': self.id,
             'title': self.title,
             'body': self.body,
-            'author': self.author.username,
+            'author': author,
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
             'views': self.views,

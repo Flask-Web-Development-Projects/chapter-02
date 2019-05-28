@@ -58,10 +58,11 @@ class Comment(db.Model):
             just username, creation_date as formatted datetime string,
             last_updated as formatted datetime string
         """
+        author = self.author.username if self.author else 'undefined'
         return {
             'id': self.id,
             'body': self.body,
-            'author': self.author.username,
+            'author': author,
             'creation_date': self.creation_date.strftime(TIME_FMT),
             'last_updated': self.last_updated.strftime(TIME_FMT),
             'parent': self.post_id
