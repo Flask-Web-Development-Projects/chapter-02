@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 
+import { CommentItem } from '../comments';
 import { PostUpdateForm } from './PostUpdateForm';
 import { Post, Comment, User } from '../../types';
 import { resolveTime } from '../../util';
@@ -39,12 +40,11 @@ export const PostDetail = ({
         null 
       }
     </p>
-    { post.comments.map((comment: Comment) => 
-      <div key={ comment.id }>
-        <p>{ comment.body }</p>
-        <p>Written by { comment.author }</p>
-        <p>Posted {resolveTime( comment.creation_date )} </p>
-      </div>
-    ) }
+    { 
+      post.comments.map((comment: Comment) => <CommentItem
+        key={ comment.id }
+        comment={ comment }
+      />)
+    }
   </div>
 }
