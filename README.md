@@ -114,3 +114,6 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-29](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-29) allows the user to update their username, bio, and passwords from their own user detail page
 - [checkpoint-30](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-30) allows the user to delete themselves
 - [checkpoint-31](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-31) rearchitects the components directory such that components live in common domains, e.g. "users", "posts", "comments", "global". It's getting to be a little much.
+- [checkpoint-32](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-32) adds in the ability to delete a post.
+- [checkpoint-33](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-33) adds in the ability to create, read, update, and delete comments.
+- [checkpoint-34](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-34) adds in the ability to like posts and manage post views.
