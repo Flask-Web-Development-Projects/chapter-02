@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect, Dispatch, SetStateAction } from 'react';
 
 import { PostTitleList } from './PostTitleList';
 import { User } from '../types';
@@ -8,10 +8,13 @@ interface Props {
   authUser: User;
   updateUser: (field: string, value: string) => {};
   updateUserPass: (oldPass: string, newPass: string, confirmPass: string) => {};
-  deleteUser: () => {};
+  toggleConfirmUserDelete: Dispatch<SetStateAction<boolean>>;
 }
 
-export const AuthUserDetail = ({ authUser, updateUser, updateUserPass, deleteUser }: Props) => {
+export const AuthUserDetail = ({
+  authUser, updateUser, updateUserPass,
+  toggleConfirmUserDelete 
+}: Props) => {
   const [ username, setUsername ] = useState('');
   const [ editingUsername, setUsernameEdit ] = useState(false);
 
@@ -122,7 +125,7 @@ export const AuthUserDetail = ({ authUser, updateUser, updateUserPass, deleteUse
         </> :
         <button onClick={() => setPassEdit(true)}>Change Password</button>
       }
-      <button onClick={ deleteUser }>Delete User</button>
+      <button onClick={ () => toggleConfirmUserDelete(true) }>Delete User</button>
     </section>
     <section>
       {

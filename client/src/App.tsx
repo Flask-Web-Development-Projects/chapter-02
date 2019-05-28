@@ -21,6 +21,7 @@ const App: FunctionComponent = () => {
 
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
+  const [ displayConfirmUserDelete, toggleConfirmUserDelete ] = useState(false);
   const [ displayPostForm, togglePostForm ] = useState(false);
   const [ displayLoginForm, toggleLoginForm ] = useState(false);
   const [ displayRegistrationForm, toggleRegistrationForm ] = useState(false);
@@ -139,7 +140,7 @@ const App: FunctionComponent = () => {
       storedToken :
       user.token;
     
-    const result = await axios.delete(
+    await axios.delete(
       url,
       { headers: { 'Authorization': `Bearer ${token}` }}
     );
@@ -230,11 +231,15 @@ const App: FunctionComponent = () => {
     togglePostForm, toggleRegistrationForm
   };
   const overlayProps = {
-    displayLoginForm, displayPostForm, displayRegistrationForm,
-    createPost, createUser, submitLogin, loginError,
-    registrationError
+    displayConfirmUserDelete, displayLoginForm, 
+    displayPostForm, displayRegistrationForm,
+    createPost, createUser, deleteUser, submitLogin,
+    loginError, registrationError, toggleConfirmUserDelete
   };
-  const authUserDetailProps = { authUser: user, updateUser, updateUserPass, deleteUser };
+  const authUserDetailProps = {
+    authUser: user, updateUser,
+    updateUserPass, toggleConfirmUserDelete
+  };
 
   return (
     <Router>
