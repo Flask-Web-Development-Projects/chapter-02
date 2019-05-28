@@ -90,8 +90,10 @@ const App: FunctionComponent = () => {
   async function updateUser(field: string, value: string) {
     const url = `${API_HOST}/users/${user.username}`;
     try {
+      const storedToken = localStorage.getItem('userToken');
+
       const token = user.token === '' ?
-        localStorage.getItem('userToken') :
+        storedToken :
         user.token;
 
       const result = await axios.put(
@@ -100,10 +102,12 @@ const App: FunctionComponent = () => {
         { headers: { 'Authorization': `Bearer ${token}` }}
       );
 
-      setUser({ ...result.data });
-      if (localStorage.getItem('userToken')) {
-        localStorage.setItem('userToken', result.headers.authorization);
+      const responseToken = result.headers.authorization;
+
+      if (storedToken && storedToken !== responseToken) {
+        localStorage.setItem('userToken', responseToken);
       }
+      setUser({ ...result.data });
       getAllPosts();
     } catch (error) {
       console.error(error);
