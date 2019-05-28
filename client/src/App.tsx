@@ -180,7 +180,7 @@ const App: FunctionComponent = () => {
         <Overlay {...overlayProps}/>
         <Switch>
           <Route path="/posts/:id" component={SelectPost} />
-          <Route path="/:username" component={UserDetail} />
+          <Route path="/users/:username" component={UserDetail} />
           <Route exact path="/" render={
             () => <PostList posts={ posts } />
           }/>
