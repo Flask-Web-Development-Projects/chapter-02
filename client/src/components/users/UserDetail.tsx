@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { RouteComponentProps } from 'react-router';
 
-import { NoMatch } from './NoMatch';
-import { PostTitleList } from './PostTitleList';
-import { User, defaultUser } from '../types';
-import { resolveTime, API_HOST } from '../util';
+import { NoMatch } from '../global';
+import { PostTitleList } from '../posts';
+
+import { User, defaultUser } from '../../types';
+import { resolveTime, API_HOST } from '../../util';
 
 type UserRouteVars = { username: string };
 

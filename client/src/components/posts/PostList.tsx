@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Post } from '../types';
 import { PostListItem } from './PostListItem';
+import { Post } from '../../types';
 
 interface Props {
   posts: Array<Post>;

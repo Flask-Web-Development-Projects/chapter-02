@@ -1,8 +1,9 @@
 import React, { useState, ChangeEvent, useEffect, Dispatch, SetStateAction } from 'react';
 
-import { PostTitleList } from './PostTitleList';
-import { User } from '../types';
-import { resolveTime } from '../util';
+import { PostTitleList } from '../posts';
+
+import { User } from '../../types';
+import { resolveTime } from '../../util';
 
 interface Props {
   authUser: User;

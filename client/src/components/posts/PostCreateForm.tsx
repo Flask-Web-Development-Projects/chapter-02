@@ -4,7 +4,7 @@ interface Props {
   createPost: (title: string, body: string) => {};
 }
 
-export const CreatePostForm = ({ createPost }: Props) => {
+export const PostCreateForm = ({ createPost }: Props) => {
     const [ title, setTitle ] = useState('');
     const [ body, setBody ] = useState('');
 

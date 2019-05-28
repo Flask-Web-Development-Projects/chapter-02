@@ -1,7 +1,8 @@
 import React from 'react';
-import { Post } from '../types';
 import { Link } from 'react-router-dom';
-import { resolveTime } from '../util';
+
+import { Post } from '../../types';
+import { resolveTime } from '../../util';
 
 interface Props {
   posts: Array<Post>;

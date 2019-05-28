@@ -1,8 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { ConfirmUserDelete } from './ConfirmUserDelete';
-import { CreatePostForm } from './PostCreateForm';
-import { LoginForm } from './LoginForm';
-import { RegistrationForm } from './RegistrationForm';
+
+import { ConfirmUserDelete, LoginForm, RegistrationForm } from '../users';
+import { PostCreateForm } from '../posts';
 
 interface Props {
   displayConfirmUserDelete: boolean;
@@ -35,7 +34,7 @@ export const Overlay = ({
   return <section id="overlay">
     {
       displayPostForm ?
-        <CreatePostForm {...postFormProps} /> : null
+        <PostCreateForm {...postFormProps} /> : null
     }
     {
       displayLoginForm ?

@@ -2,13 +2,9 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch, RouteComponentProps } from 'react-router-dom';
 
-import { AuthUserDetail } from './components/AuthUserDetail';
-import { ForumHeader } from './components/ForumHeader';
-import { NoMatch } from './components/NoMatch';
-import { Overlay } from './components/Overlay';
-import { PostDetail } from './components/PostDetail';
-import { PostList } from './components/PostList';
-import { UserDetail } from './components/UserDetail';
+import { AuthUserDetail, UserDetail } from './components/users';
+import { ForumHeader, NoMatch, Overlay } from './components/global';
+import { PostDetail, PostList } from './components/posts';
 
 import { Post, User, defaultUser } from './types';
 import { API_HOST } from './util';

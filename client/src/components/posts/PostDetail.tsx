@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
-import { Post, Comment, User } from '../types';
-import { resolveTime } from '../util';
+
 import { PostUpdateForm } from './PostUpdateForm';
+import { Post, Comment, User } from '../../types';
+import { resolveTime } from '../../util';
 
 interface Props {
     post?: Post;
