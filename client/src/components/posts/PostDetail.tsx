@@ -3,20 +3,23 @@ import { Link } from 'react-router-dom';
 
 import { CommentItem } from '../comments';
 import { PostUpdateForm } from './PostUpdateForm';
-import { Post, Comment, User } from '../../types';
+import { Post, Comment, User, defaultUser } from '../../types';
 import { resolveTime } from '../../util';
+import { CommentCreateForm } from '../comments/CommentCreateForm';
 
 interface Props {
-    post?: Post;
-    user?: User;
-    beingEdited: number;
-    setPostToEdit: Dispatch<SetStateAction<number>>;
-    updatePost: (oldId: number, title: string, body: string) => {};
-    deletePost: (deletedPost: Post) => {};
+  user?: User;
+  beingEdited: number;
+  post?: Post;
+  setPostToEdit: Dispatch<SetStateAction<number>>;
+  createComment: (parentPost: Post, commentBody: string) => {};
+  deletePost: (deletedPost: Post) => {};
+  updatePost: (oldId: number, title: string, body: string) => {};
 }
 
 export const PostDetail = ({
-  post, user, beingEdited, setPostToEdit, updatePost, deletePost
+  beingEdited, post, setPostToEdit, user, 
+  createComment, deletePost, updatePost
 }: Props) => {
   if (!post) return null;
   const updateFormComponents = { post, updatePost };
@@ -24,27 +27,33 @@ export const PostDetail = ({
     <header>
       <h2>{post.title}</h2>
       <h3>
-        <Link to={`/users/${post.author}`}>Written by {post.author}</Link> {resolveTime(post.creation_date)} | Last updated { resolveTime(post.last_updated)}
+        <Link to={`/users/${post.author}`}>Written by {post.author}</Link> {resolveTime(post.creation_date)} | Last updated {resolveTime(post.last_updated)}
       </h3>
     </header>
     {beingEdited === post.id ? <PostUpdateForm {...updateFormComponents} /> : <p>{post.body}</p>}
     <p>
       <span>{post.views} views</span>
       <span>{post.liked_by.length} likes</span>
-      { 
+      {
         (user && (user.username === post.author)) ?
-        <>
-          <button onClick={ () => setPostToEdit(post.id) }>Edit</button>
-          <button onClick={ () => deletePost(post) }>Delete</button>
-        </> : 
-        null 
+          <>
+            <button onClick={() => setPostToEdit(post.id)}>Edit</button>
+            <button onClick={() => deletePost(post)}>Delete</button>
+          </> :
+          null
       }
     </p>
-    { 
+    {
+      user === defaultUser ? null : <CommentCreateForm
+        parentPost={post}
+        createComment={createComment}  
+      />
+    }
+    {
       post.comments.map((comment: Comment) => <CommentItem
-        key={ comment.id }
-        comment={ comment }
+        key={comment.id}
+        comment={comment}
       />)
     }
-  </div>
+  </div>;
 }

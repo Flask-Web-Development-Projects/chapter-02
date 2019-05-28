@@ -236,15 +236,6 @@ const App: FunctionComponent = () => {
     setPosts(sortPosts(updatedPostList));
   }
 
-  type PostRouteVars = { id: string };
-  const SelectPost = ({ match, ...props }: RouteComponentProps<PostRouteVars>) => {
-    const postId = match.params.id;
-    const post = posts.find((post: Post) => post.id === parseInt(postId));
-    const noMatchProps = { match, ...props};
-    const detailProps = { post, user, beingEdited, setPostToEdit, updatePost, deletePost };
-    return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
-  }
-
   const headerProps = {
     isLoggedIn, logoutUser, toggleLoginForm, 
     togglePostForm, toggleRegistrationForm
@@ -259,6 +250,18 @@ const App: FunctionComponent = () => {
     authUser: user, updateUser,
     updateUserPass, toggleConfirmUserDelete
   };
+
+  type PostRouteVars = { id: string };
+  const SelectPost = ({ match, ...props }: RouteComponentProps<PostRouteVars>) => {
+    const postId = match.params.id;
+    const post = posts.find((post: Post) => post.id === parseInt(postId));
+    const noMatchProps = { match, ...props };
+    const detailProps = {
+      post, user, beingEdited, setPostToEdit,
+      updatePost, deletePost, createComment
+    };
+    return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
+  }
 
   return (
     <Router>
