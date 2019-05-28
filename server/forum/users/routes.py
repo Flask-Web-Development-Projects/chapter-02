@@ -99,8 +99,8 @@ def verify_user(username: str) -> bool:
         True if the authorized user is the same as the account trying
         to be accessed, False otherwise.
     """
-    token = request.cookies['auth_token']
-    auth_user = token.split(':')[0]
+    token = request.headers['Authorization']
+    auth_user = token.split(':')[0].replace('Bearer ', '')
     return username == auth_user
 
 @user_routes.route('/users/<string:username>', methods=["PUT"])
@@ -132,9 +132,14 @@ def update_account(username: str) -> Response:
         response = jsonify({
             'error': 'User is not authorized to make this request'
         })
-        repsonse.status_code = status.HTTP_401_UNAUTHORIZED
+        response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
     
+    if get_user(request.data.get('username')):
+        response = jsonify({'error': 'Username already exists'})
+        response.status_code = status.HTTP_403_FORBIDDEN
+        return response
+
     user.username = request.data.get('username', user.username)
     user.bio = request.data.get('bio', user.bio)
 

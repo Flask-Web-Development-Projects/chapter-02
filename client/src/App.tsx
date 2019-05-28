@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch, RouteComponentProps } from 'react-router-dom';
 
+import { AuthUserDetail } from './components/AuthUserDetail';
 import { ForumHeader } from './components/ForumHeader';
 import { NoMatch } from './components/NoMatch';
 import { Overlay } from './components/Overlay';
@@ -28,6 +29,11 @@ const App: FunctionComponent = () => {
   const [ registrationError, setRegistrationError ] = useState('');
   
   const [ user, setUser ] = useState<User>(defaultUser);
+
+  useEffect(() => {
+    getAuthenticatedUser();
+    getAllPosts();
+  }, []);
 
   async function submitLogin(
     username: string, password: string, rememberMe: boolean
@@ -78,6 +84,25 @@ const App: FunctionComponent = () => {
       if (rememberMe) localStorage.setItem('userToken', token);
     } catch (error) {
       setRegistrationError(error.response.data.error);
+    }
+  }
+
+  async function updateUser(field: string, value: string) {
+    const url = `${API_HOST}/users/${user.username}`;
+    try {
+      const token = user.token === '' ?
+        localStorage.getItem('userToken') :
+        user.token;
+
+      const result = await axios.put(
+        url,
+        { [field] : value },
+        { headers: { 'Authorization': `Bearer ${token}` }}
+      );
+
+      setUser({ ...result.data, token });
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -149,11 +174,6 @@ const App: FunctionComponent = () => {
     setPosts(sortedPosts);
   }
 
-  useEffect(() => {
-    getAuthenticatedUser();
-    getAllPosts();
-  }, []);
-
   type PostRouteVars = { id: string };
   const SelectPost = ({ match, ...props }: RouteComponentProps<PostRouteVars>) => {
     const postId = match.params.id;
@@ -172,6 +192,7 @@ const App: FunctionComponent = () => {
     createPost, createUser, submitLogin, loginError,
     registrationError
   };
+  const authUserDetailProps = { authUser: user, updateUser };
 
   return (
     <Router>
@@ -180,6 +201,9 @@ const App: FunctionComponent = () => {
         <Overlay {...overlayProps}/>
         <Switch>
           <Route path="/posts/:id" component={SelectPost} />
+          <Route path="/profile" render={
+            () => <AuthUserDetail {...authUserDetailProps} />
+          } />
           <Route path="/users/:username" component={UserDetail} />
           <Route exact path="/" render={
             () => <PostList posts={ posts } />

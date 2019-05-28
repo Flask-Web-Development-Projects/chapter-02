@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, MouseEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 
 import { PostTitleList } from './PostTitleList';
 import { User } from '../types';
@@ -6,14 +6,22 @@ import { resolveTime } from '../util';
 
 interface Props {
   authUser: User;
+  updateUser: (field: string, value: string) => {};
 }
 
-export const AuthUserDetail = ({ authUser }: Props) => {
-  const [ username, setUsername ] = useState(authUser.username);
+export const AuthUserDetail = ({ authUser, updateUser }: Props) => {
+  const [ username, setUsername ] = useState('');
   const [ editingUsername, setUsernameEdit ] = useState(false);
 
-  const [ bio, setBio ] = useState(authUser.bio); 
+  const [ bio, setBio ] = useState(''); 
   const [ editingBio, setBioEdit ] = useState(false);
+
+  useEffect(() => {
+    setUsername(authUser.username);
+    setBio(authUser.bio);
+  }, [authUser]);
+
+  console.log('foo');
 
   const updateUsername = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -22,7 +30,10 @@ export const AuthUserDetail = ({ authUser }: Props) => {
     setUsernameEdit(false);
     setUsername(authUser.username);
   }
-  const submitUsername = () => setUsernameEdit(false);
+  const submitUsername = () => {
+    updateUser('username', username);
+    setUsernameEdit(false);
+  }
 
   const updateBio = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setBio(event.target.value);
@@ -31,7 +42,10 @@ export const AuthUserDetail = ({ authUser }: Props) => {
     setBioEdit(false);
     setBio(authUser.username);
   }
-  const submitBio = () => setBioEdit(false);
+  const submitBio = () => {
+    updateUser('bio', bio);
+    setBioEdit(false);
+  }
 
   return <article>
     <h2>
@@ -45,10 +59,10 @@ export const AuthUserDetail = ({ authUser }: Props) => {
           />
           <button onClick={submitUsername}>Update</button>
           <button onClick={cancelUsername}>Cancel</button>
-        </> :
-        `${authUser.username} ${
+        </> : <>
+          { authUser.username }
           <button onClick={() => setUsernameEdit(true)}>Edit</button>
-        }`
+        </>
     }
     </h2>
     <p>Account Created: {resolveTime(authUser.creation_date)}</p>
@@ -62,8 +76,10 @@ export const AuthUserDetail = ({ authUser }: Props) => {
           />
           <button onClick={submitBio}>Update</button>
           <button onClick={cancelBio}>Cancel</button>
-        </> :
-        authUser.bio
+        </> : <>
+          { authUser.bio !== '' ? authUser.bio : '--' }
+          <button onClick={() => setBioEdit(true)}>Edit</button>
+        </>
       }
     </section>
     <h3>Most Recent Posts</h3>
