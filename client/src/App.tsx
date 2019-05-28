@@ -203,14 +203,37 @@ const App: FunctionComponent = () => {
   async function deletePost(deletedPost: Post) {
     const url = `${API_HOST}/posts/${deletedPost.id}`;
     await axios.delete(
-      url, { headers: {'Authorization': `Bearer ${user.token}`}}
-    )
+      url, { headers: {Authorization: `Bearer ${user.token}`} }
+    );
 
     const sortedPosts = sortPosts(posts
       .filter((post: Post) => post.id !== deletedPost.id)
     );
 
     setPosts(sortedPosts);
+  }
+
+  async function createComment(parentPost: Post, commentBody: string) {
+    const url = `${API_HOST}/posts/${parentPost.id}/comments`;
+    const result = await axios.post(
+      url,
+      { body: commentBody },
+      { headers: {Authorization: `Bearer ${user.token}`} }
+    );
+
+    const newComment = result.data;
+    const updatedCommentList = parentPost.comments.concat(newComment);
+    const updatedPost = Object.assign(
+      {},
+      parentPost,
+      {comments: updatedCommentList}
+    );
+
+    const updatedPostList = posts
+      .filter((post: Post) => post.id !== updatedPost.id)
+      .concat(updatedPost);
+    
+    setPosts(sortPosts(updatedPostList));
   }
 
   type PostRouteVars = { id: string };
