@@ -111,3 +111,4 @@ If you want to see this project built step by step, follow the branches of the r
 - [checkpoint-26](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-26) allows the user to delete their post
 - [checkpoint-27](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-27) enables the logout functionality
 - [checkpoint-28](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-28) creates the page for user details
+- [checkpoint-29](https://github.com/Flask-Web-Development-Projects/chapter-02/tree/checkpoint-29) allows the user to update their username, bio, and passwords from their own user detail page.
