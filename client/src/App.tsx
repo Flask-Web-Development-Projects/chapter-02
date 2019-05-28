@@ -132,6 +132,22 @@ const App: FunctionComponent = () => {
     );
   }
 
+  async function deleteUser() {
+    const url = `${API_HOST}/users/${user.username}`;
+    const storedToken = localStorage.getItem('userToken');
+    const token = user.token === '' ?
+      storedToken :
+      user.token;
+    
+    const result = await axios.delete(
+      url,
+      { headers: { 'Authorization': `Bearer ${token}` }}
+    );
+
+    setUser(defaultUser);
+    setIsLoggedIn(false);
+  }
+
   const logoutUser = () => {
     setIsLoggedIn(false);
     setUser(defaultUser);
