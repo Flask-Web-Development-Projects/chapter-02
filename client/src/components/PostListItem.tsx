@@ -14,9 +14,9 @@ export const PostListItem = ({ post }: Props) => {
       <Link to={ `/posts/${ post.id }` }>
         <h2>{ post.title }</h2>
       </Link>
-      <Link to={ `/users/${ post.author }` }>
-        <h3>Written by { post.author }{ resolveTime(post.creation_date) }</h3>
-      </Link>
+      <h3>
+        <Link to={`/users/${post.author}`}>Written by {post.author}</Link> { resolveTime(post.creation_date) }
+      </h3>
     </header>
     <p>{ post.body }</p>
     <p>

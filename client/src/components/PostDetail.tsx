@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { Link } from 'react-router-dom';
 import { Post, Comment, User } from '../types';
 import { resolveTime } from '../util';
 import { PostUpdateForm } from './PostUpdateForm';
@@ -20,7 +21,9 @@ export const PostDetail = ({
   return <div>
     <header>
       <h2>{post.title}</h2>
-      <h3>Written by {post.author} {resolveTime(post.creation_date)} | Last updated { resolveTime(post.last_updated)}</h3>
+      <h3>
+        <Link to={`/users/${post.author}`}>Written by {post.author}</Link> {resolveTime(post.creation_date)} | Last updated { resolveTime(post.last_updated)}
+      </h3>
     </header>
     {beingEdited === post.id ? <PostUpdateForm {...updateFormComponents} /> : <p>{post.body}</p>}
     <p>
