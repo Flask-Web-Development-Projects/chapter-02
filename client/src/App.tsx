@@ -100,7 +100,11 @@ const App: FunctionComponent = () => {
         { headers: { 'Authorization': `Bearer ${token}` }}
       );
 
-      setUser({ ...result.data, token });
+      setUser({ ...result.data });
+      if (localStorage.getItem('userToken')) {
+        localStorage.setItem('userToken', result.headers.authorization);
+      }
+      getAllPosts();
     } catch (error) {
       console.error(error);
     }
