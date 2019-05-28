@@ -114,6 +114,24 @@ const App: FunctionComponent = () => {
     }
   }
 
+  async function updateUserPass(oldPass: string, newPass: string, confirmPass: string) {
+    const url = `${API_HOST}/users/${user.username}`;
+    const storedToken = localStorage.getItem('userToken');
+    const token = user.token === '' ?
+      storedToken :
+      user.token;
+
+    await axios.put(
+      url,
+      { 
+        password: oldPass,
+        new_password: newPass,
+        new_password2: confirmPass
+      },
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+  }
+
   const logoutUser = () => {
     setIsLoggedIn(false);
     setUser(defaultUser);
@@ -200,7 +218,7 @@ const App: FunctionComponent = () => {
     createPost, createUser, submitLogin, loginError,
     registrationError
   };
-  const authUserDetailProps = { authUser: user, updateUser };
+  const authUserDetailProps = { authUser: user, updateUser, updateUserPass };
 
   return (
     <Router>
