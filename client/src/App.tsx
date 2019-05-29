@@ -207,6 +207,22 @@ const App: FunctionComponent = () => {
     thePost.views++;
   }
 
+  async function likePost(thePost: Post) {
+    const url = `${API_HOST}/posts/${thePost.id}`;
+    if (user.token !== '' && !thePost.liked_by.includes(user.username) ) {
+      const result = await axios.put(
+        url, { liked: true }, { headers: { 'Authorization': `Bearer ${user.token}` } }
+      );
+
+      const sortedPosts = sortPosts(posts
+        .filter((post: Post) => post.id !== thePost.id)
+        .concat(result.data)
+      );
+
+      setPosts(sortedPosts);
+    }
+  }
+
   async function deletePost(deletedPost: Post) {
     const url = `${API_HOST}/posts/${deletedPost.id}`;
     await axios.delete(

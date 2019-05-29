@@ -44,6 +44,9 @@ export const PostDetail = ({
       </h3>
     </header>
     {beingEdited === post.id ? <PostUpdateForm {...updateFormComponents} /> : <p>{post.body}</p>}
+    <div>
+      <button>Like this post</button>
+    </div>
     <p>
       <span>{post.views} views</span>
       <span>{post.liked_by.length} likes</span>
