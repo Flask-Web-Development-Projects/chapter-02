@@ -200,6 +200,18 @@ const App: FunctionComponent = () => {
     }
   }
 
+  async function updatePostViews(thePost: Post) {
+    const url = `${API_HOST}/posts/${thePost.id}/views`;
+    const result = await axios.put(url)
+
+    const sortedPosts = sortPosts(posts
+      .filter((post: Post) => post.id !== thePost.id)
+      .concat(result.data)
+    );
+
+    setPosts(sortedPosts);
+  }
+
   async function deletePost(deletedPost: Post) {
     const url = `${API_HOST}/posts/${deletedPost.id}`;
     await axios.delete(

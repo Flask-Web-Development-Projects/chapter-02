@@ -152,14 +152,6 @@ def update_post(post_id: int) -> Response:
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
 
-    if request.data.get('viewed', False):
-        post.views += 1
-        db.session.add(post)
-        db.session.commit()
-        response = Response()
-        response.status_code = status.HTTP_204_NO_CONTENT
-        return response
-
     user = get_user_from_request()
     if not user:
         response = jsonify({'error': 'Authorized user not found'})
@@ -177,6 +169,36 @@ def update_post(post_id: int) -> Response:
     db.session.add(post)
     db.session.commit()
 
+    response = jsonify(post.to_json())
+    response.status_code = status.HTTP_200_OK
+    return response
+
+@post_routes.route('/posts/<int:post_id>/views', methods=["PUT"])
+def update_post_views(post_id: int) -> Response:
+    """Update the view count of a post when it is viewed.
+    
+    Parameters
+    ----------
+    post_id : int
+        The ID of the requested post
+    
+    Returns
+    -------
+    Response
+        If the post can be found, then the response will
+        be the updated post object with the new view count.
+    """
+    post = Post.query.get(post_id)
+    if not post:
+        response = jsonify({'error': 'This post does not exist'})
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    post.views += 1
+
+    db.session.add(post)
+    db.session.commit()
+    
     response = jsonify(post.to_json())
     response.status_code = status.HTTP_200_OK
     return response
