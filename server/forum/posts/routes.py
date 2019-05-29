@@ -152,13 +152,20 @@ def update_post(post_id: int) -> Response:
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
 
+    if request.data.get('viewed', False):
+        post.views += 1
+        db.session.add(post)
+        db.session.commit()
+        response = Response()
+        response.status_code = status.HTTP_204_NO_CONTENT
+        return response
+
     user = get_user_from_request()
     if not user:
         response = jsonify({'error': 'Authorized user not found'})
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
 
-    post.views += 1
     if user not in post.liked_by and request.data.get('liked', False):
         post.liked_by.append(user)
     
