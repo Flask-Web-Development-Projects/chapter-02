@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { CommentItem } from '../comments';
@@ -14,16 +14,23 @@ interface Props {
   setPostToEdit: Dispatch<SetStateAction<number>>;
   createComment: (parentPost: Post, commentBody: string) => {};
   deleteComment: (parentPost: Post, commentId: number) => {};
+  updateComment: (parentPost: Post, commentId: number, commentBody: string) => {};
   deletePost: (deletedPost: Post) => {};
   updatePost: (oldId: number, title: string, body: string) => {};
 }
 
 export const PostDetail = ({
   beingEdited, post, setPostToEdit, user, 
-  createComment, deleteComment, deletePost, updatePost
+  createComment, deleteComment, updateComment,
+  deletePost, updatePost
 }: Props) => {
+  const [ editingComment, setEditedComment ] = useState(-1);
   if (!post) return null;
   const updateFormComponents = { post, updatePost };
+  const commentProps = { 
+    deleteComment, post, user, editingComment,
+    setEditedComment, updateComment
+  }
   return <div>
     <header>
       <h2>{post.title}</h2>
@@ -54,9 +61,7 @@ export const PostDetail = ({
       post.comments.map((comment: Comment) => <CommentItem
         key={comment.id}
         comment={comment}
-        deleteComment={deleteComment}
-        post={post}
-        user={user}
+        {...commentProps}
       />)
     }
   </div>;

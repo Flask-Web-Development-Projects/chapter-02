@@ -254,6 +254,32 @@ const App: FunctionComponent = () => {
     setPosts(updatedPostList);
   }
 
+  async function updateComment(
+    parentPost: Post, commentId: number,
+    commentBody: string
+  ) {
+    const url = `${API_HOST}/posts/${parentPost.id}/comments/${commentId}`;
+    const result = await axios.put(
+      url,
+      {body: commentBody},
+      { headers: { Authorization: `Bearer ${user.token}` } }
+    );
+
+    const updatedComment = result.data;
+    const updatedCommentList = parentPost.comments.concat(updatedComment);
+    const updatedPost = Object.assign(
+      {},
+      parentPost,
+      { comments: updatedCommentList }
+    );
+
+    const updatedPostList = posts
+      .filter((post: Post) => post.id !== updatedPost.id)
+      .concat(updatedPost);
+
+    setPosts(sortPosts(updatedPostList));
+  }
+
   const headerProps = {
     isLoggedIn, logoutUser, toggleLoginForm, 
     togglePostForm, toggleRegistrationForm
@@ -276,7 +302,8 @@ const App: FunctionComponent = () => {
     const noMatchProps = { match, ...props };
     const detailProps = {
       post, user, beingEdited, setPostToEdit,
-      updatePost, deletePost, createComment, deleteComment
+      updatePost, deletePost, createComment, deleteComment,
+      updateComment
     };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
