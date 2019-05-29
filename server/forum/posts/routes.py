@@ -158,8 +158,12 @@ def update_post(post_id: int) -> Response:
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
 
-    if user not in post.liked_by and request.data.get('liked', False):
-        post.liked_by.append(user)
+    if request.data.get('liked', None) in [True, False]:
+        is_liked = request.data.get('liked')
+        if user not in post.liked_by and is_liked:
+            post.liked_by.append(user)
+        elif user in post.liked_by and not is_liked:
+            post.liked_by.remove(user)
     
     if user == post.author:
         post.title = request.data.get("title", post.title)

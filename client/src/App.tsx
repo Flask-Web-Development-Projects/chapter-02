@@ -204,22 +204,23 @@ const App: FunctionComponent = () => {
     if (!thePost) return null;
     const url = `${API_HOST}/posts/${thePost.id}/views`;
     await axios.put(url);
-    thePost.views++;
   }
 
-  async function likePost(thePost: Post) {
+  async function likePost(thePost: Post, liked: boolean) {
     const url = `${API_HOST}/posts/${thePost.id}`;
-    if (user.token !== '' && !thePost.liked_by.includes(user.username) ) {
-      const result = await axios.put(
-        url, { liked: true }, { headers: { 'Authorization': `Bearer ${user.token}` } }
+    if (user.token !== '') {
+      await axios.put(
+        url, { liked }, { headers: { 'Authorization': `Bearer ${user.token}` } }
       );
-
-      const sortedPosts = sortPosts(posts
-        .filter((post: Post) => post.id !== thePost.id)
-        .concat(result.data)
-      );
-
-      setPosts(sortedPosts);
+      if (thePost.liked_by.includes(user.username) && !liked) {
+        thePost.liked_by = thePost
+          .liked_by
+          .filter((name: string) => name !== user.username);
+      } else if (!thePost.liked_by.includes(user.username) && liked) {
+        thePost.liked_by = thePost
+          .liked_by
+          .concat(user.username);
+      }
     }
   }
 
@@ -326,7 +327,7 @@ const App: FunctionComponent = () => {
     const detailProps = {
       post, user, beingEdited, setPostToEdit,
       updatePost, deletePost, createComment, deleteComment,
-      updateComment, updatePostViews
+      updateComment, updatePostViews, likePost
     };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }
