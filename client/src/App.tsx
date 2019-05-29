@@ -6,7 +6,7 @@ import { AuthUserDetail, UserDetail } from './components/users';
 import { ForumHeader, NoMatch, Overlay } from './components/global';
 import { PostDetail, PostList } from './components/posts';
 
-import { Post, User, defaultUser } from './types';
+import { Comment, Post, User, defaultUser } from './types';
 import { API_HOST } from './util';
 
 import './App.css';
@@ -236,6 +236,24 @@ const App: FunctionComponent = () => {
     setPosts(sortPosts(updatedPostList));
   }
 
+  async function deleteComment(parentPost: Post, commentId: number) {
+    const url = `${API_HOST}/posts/${parentPost.id}/comments/${commentId}`;
+    await axios.delete(url, { headers: { Authorization: `Bearer ${user.token}` }});
+
+    const updatedCommentList = parentPost.comments
+      .filter((comment: Comment) => comment.id !== commentId);
+    const updatedPost = Object.assign(
+      {},
+      parentPost,
+      { comments: updatedCommentList}
+    );
+    const updatedPostList = posts
+      .filter((post: Post) => post.id !== updatedPost.id)
+      .concat(updatedPost);
+    
+    setPosts(updatedPostList);
+  }
+
   const headerProps = {
     isLoggedIn, logoutUser, toggleLoginForm, 
     togglePostForm, toggleRegistrationForm
@@ -258,7 +276,7 @@ const App: FunctionComponent = () => {
     const noMatchProps = { match, ...props };
     const detailProps = {
       post, user, beingEdited, setPostToEdit,
-      updatePost, deletePost, createComment
+      updatePost, deletePost, createComment, deleteComment
     };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }

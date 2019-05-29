@@ -13,13 +13,14 @@ interface Props {
   post?: Post;
   setPostToEdit: Dispatch<SetStateAction<number>>;
   createComment: (parentPost: Post, commentBody: string) => {};
+  deleteComment: (parentPost: Post, commentId: number) => {};
   deletePost: (deletedPost: Post) => {};
   updatePost: (oldId: number, title: string, body: string) => {};
 }
 
 export const PostDetail = ({
   beingEdited, post, setPostToEdit, user, 
-  createComment, deletePost, updatePost
+  createComment, deleteComment, deletePost, updatePost
 }: Props) => {
   if (!post) return null;
   const updateFormComponents = { post, updatePost };
@@ -53,6 +54,9 @@ export const PostDetail = ({
       post.comments.map((comment: Comment) => <CommentItem
         key={comment.id}
         comment={comment}
+        deleteComment={deleteComment}
+        post={post}
+        user={user}
       />)
     }
   </div>;
