@@ -200,16 +200,11 @@ const App: FunctionComponent = () => {
     }
   }
 
-  async function updatePostViews(thePost: Post) {
+  async function updatePostViews(thePost?: Post) {
+    if (!thePost) return null;
     const url = `${API_HOST}/posts/${thePost.id}/views`;
-    const result = await axios.put(url)
-
-    const sortedPosts = sortPosts(posts
-      .filter((post: Post) => post.id !== thePost.id)
-      .concat(result.data)
-    );
-
-    setPosts(sortedPosts);
+    await axios.put(url);
+    thePost.views++;
   }
 
   async function deletePost(deletedPost: Post) {
@@ -315,7 +310,7 @@ const App: FunctionComponent = () => {
     const detailProps = {
       post, user, beingEdited, setPostToEdit,
       updatePost, deletePost, createComment, deleteComment,
-      updateComment
+      updateComment, updatePostViews
     };
     return post ? <PostDetail {...detailProps} /> : <NoMatch {...noMatchProps} />;
   }

@@ -17,15 +17,20 @@ interface Props {
   updateComment: (parentPost: Post, commentId: number, commentBody: string) => {};
   deletePost: (deletedPost: Post) => {};
   updatePost: (oldId: number, title: string, body: string) => {};
+  updatePostViews: (thePost?: Post) => {};
 }
 
 export const PostDetail = ({
   beingEdited, post, setPostToEdit, user, 
   createComment, deleteComment, updateComment,
-  deletePost, updatePost
+  deletePost, updatePost, updatePostViews
 }: Props) => {
   const [ editingComment, setEditedComment ] = useState(-1);
+
+  updatePostViews(post);
+
   if (!post) return null;
+  
   const updateFormComponents = { post, updatePost };
   const commentProps = { 
     deleteComment, post, user, editingComment,
