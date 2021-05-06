@@ -2,7 +2,7 @@ from setuptools import setup
 
 required = [
     "flask-api==1.1",
-    "flask-cors==3.0.7",
+    "flask-cors==3.0.9",
     "flask-httpauth==3.2.4",
     "flask-migrate==2.4.0",
     "flask-script==2.0.6",
